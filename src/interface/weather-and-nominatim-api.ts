@@ -5,7 +5,6 @@ interface WeatherAndNominatimApi {
     soil_moisture_0_to_1cm: Array<any>,
     river_discharge_mean: Array<any>,
     hours: number,
-    address: string
 }
  
 export default WeatherAndNominatimApi;

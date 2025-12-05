@@ -1,7 +1,7 @@
 import WeatherAndNominatimApi from "@/interface/weather-and-nominatim-api";
 
 export async function logicFloodPrediction(WeatherAndNominatimApi: WeatherAndNominatimApi) {
-    const { elevation, precipitation_sum, soil_moisture_0_to_1cm, river_discharge_mean, hours, address } = WeatherAndNominatimApi;
+    const { elevation, precipitation_sum, soil_moisture_0_to_1cm, river_discharge_mean, hours } = WeatherAndNominatimApi;
 
     /** TAHAP 1: Menentukan Konstanta dari Ketinggian (Profilling Daerah) 
      * Sistem ini menentukan seberapa kuat pertahanan darrah terhadap air melalui drainase alaminya (karena gravitasi),
@@ -61,7 +61,6 @@ export async function logicFloodPrediction(WeatherAndNominatimApi: WeatherAndNom
         "kadar air pada tanah pada 0 sampai 1 cm": soil_moisture_0_to_1cm[0] + " " + soil_moisture_0_to_1cm[1],
         "debit sungai rata-rata": river_discharge_mean[0] + " " + river_discharge_mean[1],
         "jam saat ini": hours,
-        "alamat": address,
         "hasil": {
             "drainase alami": drainase_alami,
             "kondisi tanah": kondisi_tanah,
