@@ -1,17 +1,13 @@
 import { PrismaClient } from "@prisma/client"
 
-// membuat fungsi untuk koneksi ke prisma
-const prismaClientSingleton = () => {
-    return new PrismaClient()
+declare global {
+    var prisma: PrismaClient | undefined;
 }
 
-// mengakses penyimpanan global milik nodejs
-let globalForPrisma = globalThis
+const prisma = global.prisma || new PrismaClient;
 
-// didalam variabel prisma berisi globalForPrisma.prisma, jika tidak ada maka buat koneksi baru
-const prisma = globalForPrisma ?? prismaClientSingleton()
+if(process.env.NODE_ENV !== 'production') {
+    global.prisma = prisma;
+}
 
-// jika tidak dalam mode production, globalForPrisma.prisma berisi variabel prisma berupa koneksi ke prisma
-if(process.env.NODE_ENV !== "production") globalForPrisma = prisma
-
-export default prisma
+export default prisma;

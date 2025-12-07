@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
     "@prisma/client": "^5.10.2",
+<<<<<<< HEAD
     "@reduxjs/toolkit": "^2.11.0",
     "axios": "^1.13.2",
     "leaflet": "^1.9.4",
@@ -17,6 +18,12 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-leaflet": "^5.0.0"
+=======
+    "cloudinary": "^2.8.0",
+    "next": "^16.0.7",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
+>>>>>>> dd0c2443725e2041534ea6993580f72be181c149
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
