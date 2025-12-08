@@ -1,14 +1,13 @@
 import Footer from '@/components/layout/Footer'
 import Header from '@/components/layout/Header'
-import MapLayout from '@/components/layout/MapLayout'
-import React from 'react'
+import MapLoader from '@/components/layout/MapLoader'
 
 const page = () => {
   return (
     <>
       <Header />
       <div className='min-h-screen '>
-        <MapLayout />
+        <MapLoader />
       </div>
       <Footer />
     </>
