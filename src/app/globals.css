@@ -15,7 +15,7 @@
 /* Custom Leaflet Map Styling for EcoFlood */
 .leaflet-container {
   background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
-  font-family: "Geist Sans", Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
 }
 
 /* Popup Styling */
@@ -75,17 +75,16 @@
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --color-surface-primary: var(--surface-primary);
   --color-primary: var(--primary);
   --color-accent: var(--accent);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: "DM Sans", sans-serif;
+  --font-mulish: "Mulish", sans-serif;
 }
 
 body {
   background: var(--color-background);
   color: var(--color-surface-primary);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
 }
