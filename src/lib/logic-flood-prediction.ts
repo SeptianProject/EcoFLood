@@ -35,7 +35,7 @@ export async function logicFloodPrediction(WeatherAndNominatimApi: WeatherAndNom
     if (river_discharge_mean[0] > safe_limit_river_discharge) {
         status_sungai += "🏞️: Status sungai tidak aman, melebihi batas aman.";
         skor_potensi_banjir += 100;
-    } else if(river_discharge_mean[0] > (safe_limit_river_discharge * 0.8)) {
+    } else if (river_discharge_mean[0] > (safe_limit_river_discharge * 0.8)) {
         status_sungai += "🏞️: Status sungai rawan, hampir melebihi batas aman.";
         skor_potensi_banjir += 30;
     } else {
@@ -54,13 +54,13 @@ export async function logicFloodPrediction(WeatherAndNominatimApi: WeatherAndNom
     }
 
     // Analisis Hujan
-    if(precipitation_sum[0] < 10) {
+    if (precipitation_sum[0] < 10) {
         analisis_hujan += "🌧: Kondisi hujan dalam keadaan gerimis/ringan.";
-    } else if(precipitation_sum[0] > 10 && precipitation_sum[0] < 50) {
+    } else if (precipitation_sum[0] > 10 && precipitation_sum[0] < 50) {
         analisis_hujan += "🌧: Kondisi hujan dalam keadaan sedang, biasa saja.";
         skor_potensi_banjir += 30;
-    } else if(precipitation_sum[0] > 50 && precipitation_sum[0] < 100) { 
-        analisis_hujan  += "🌧: Kondisi hujan dalam keadaan lebat.";
+    } else if (precipitation_sum[0] > 50 && precipitation_sum[0] < 100) {
+        analisis_hujan += "🌧: Kondisi hujan dalam keadaan lebat.";
         skor_potensi_banjir += 60;
     } else {
         analisis_hujan += "🌧: Kondisi hujan dalam keadaan ekstrem.";
@@ -68,26 +68,26 @@ export async function logicFloodPrediction(WeatherAndNominatimApi: WeatherAndNom
     }
 
     /** TAHAP Penentuan status */
-    if(skor_potensi_banjir < 30) {
+    if (skor_potensi_banjir < 30) {
         prediksi_potensi_banjir += "Kondisi lingkungan kondusif. Hujan yang turun mampu diserap tanah atau dialirkan drainase dengan baik.";
-    } else if(skor_potensi_banjir > 30 && skor_potensi_banjir < 70) {
+    } else if (skor_potensi_banjir > 30 && skor_potensi_banjir < 70) {
         prediksi_potensi_banjir += "Perlu kewaspadaan. Kombinasi hujan dan kondisi tanah mulai memberatkan sistem drainase. Potensi genangan air mungkin terjadi.";
     } else {
         prediksi_potensi_banjir += "Potensi banjir tinggi! Akumulasi hujan melebihi kapasitas tampung lingkungan.";
     }
 
     return {
-        "ketinggian_daratan": elevation,
-        "jumlah hujan turun hari ini": precipitation_sum[0] + " " + precipitation_sum[1],
-        "kadar air pada tanah pada 0 sampai 1 cm": soil_moisture_0_to_1cm[0] + " " + soil_moisture_0_to_1cm[1],
-        "debit sungai rata-rata": river_discharge_mean[0] + " " + river_discharge_mean[1],
-        "jam saat ini": hours,
-        "hasil": {
-            "drainase alami": drainase_alami,
-            "kondisi tanah": kondisi_tanah,
-            "status sungai": status_sungai,
-            "analisis hujan": analisis_hujan
+        ketinggian_daratan: elevation,
+        jumlah_hujan_turun_hari_ini: precipitation_sum[0] + " " + precipitation_sum[1],
+        kadar_air_pada_tanah: soil_moisture_0_to_1cm[0] + " " + soil_moisture_0_to_1cm[1],
+        debit_sungai_rata_rata: river_discharge_mean[0] + " " + river_discharge_mean[1],
+        jam_saat_ini: hours,
+        hasil: {
+            drainase_alami: drainase_alami,
+            kondisi_tanah: kondisi_tanah,
+            status_sungai: status_sungai,
+                            analisis_hujan: analisis_hujan
         },
-        "hasil prediksi potensi banjir": prediksi_potensi_banjir
+        hasil_prediksi_potensi_banjir: prediksi_potensi_banjir
     };
 }
