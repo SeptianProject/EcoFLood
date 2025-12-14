@@ -25,9 +25,9 @@ const PageHeader: React.FC<PageHeaderProps> = ({
      const router = useRouter()
 
      // Animation hooks untuk setiap elemen
-     const [backButtonRef, backButtonVisible] = useScrollAnimation({ initialAnimation: true, delay: 100 })
-     const [titleRef, titleVisible] = useScrollAnimation({ initialAnimation: true, delay: 200 })
-     const [buttonRef, buttonVisible] = useScrollAnimation({ initialAnimation: true, delay: 300 })
+     const [backButtonRef, backButtonVisible] = useScrollAnimation({ initialAnimation: true, delay: 100, waitForPageLoad: true })
+     const [titleRef, titleVisible] = useScrollAnimation({ initialAnimation: true, delay: 200, waitForPageLoad: true })
+     const [buttonRef, buttonVisible] = useScrollAnimation({ initialAnimation: true, delay: 300, waitForPageLoad: true })
 
      return (
           <div className={`bg-surface-primary text-background shadow-lg ${className}`}>

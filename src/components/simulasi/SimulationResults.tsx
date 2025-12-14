@@ -31,9 +31,9 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
      recommendations
 }) => {
      // Animation hooks untuk setiap section
-     const [riskRef, riskVisible] = useScrollAnimation({ initialAnimation: true, delay: 100 })
-     const [metricsRef, metricsVisible] = useScrollAnimation({ initialAnimation: true, delay: 200 })
-     const [factorsRef, factorsVisible] = useScrollAnimation({ initialAnimation: true, delay: 300 })
+     const [riskRef, riskVisible] = useScrollAnimation({ initialAnimation: true, delay: 100, waitForPageLoad: true })
+     const [metricsRef, metricsVisible] = useScrollAnimation({ initialAnimation: true, delay: 200, waitForPageLoad: true })
+     const [factorsRef, factorsVisible] = useScrollAnimation({ initialAnimation: true, delay: 300, waitForPageLoad: true })
 
      const riskColors = {
           low: { bg: 'bg-green-500', text: 'text-green-500', label: 'Rendah' },

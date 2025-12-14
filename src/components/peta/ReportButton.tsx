@@ -9,15 +9,15 @@ interface ReportButtonProps {
 }
 
 const ReportButton: React.FC<ReportButtonProps> = ({ onClick }) => {
-     const [buttonRef, buttonVisible] = useScrollAnimation({ initialAnimation: true, delay: 600 })
+     const [buttonRef, buttonVisible] = useScrollAnimation({ initialAnimation: true, delay: 600, waitForPageLoad: true })
 
      return (
           <button
                ref={buttonRef}
                onClick={onClick}
                className={`group fixed bottom-6 right-6 sm:bottom-8 sm:right-8 bg-primary hover:bg-primary/90 text-surface-primary rounded-full shadow-2xl hover:shadow-accent/50 transition-all duration-700 hover:scale-110 active:scale-95 flex items-center gap-2 sm:gap-3 px-4 py-3 sm:px-6 sm:py-4 font-bold cursor-pointer ${buttonVisible
-                         ? 'opacity-100 scale-100'
-                         : 'opacity-0 scale-50'
+                    ? 'opacity-100 scale-100'
+                    : 'opacity-0 scale-50'
                     }`}
                style={{ zIndex: 9999 }}
                title="Laporkan Kejadian"

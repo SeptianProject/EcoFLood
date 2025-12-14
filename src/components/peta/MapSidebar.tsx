@@ -36,10 +36,10 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
      const router = useRouter()
 
      // Animation hooks untuk setiap section
-     const [headerRef, headerVisible] = useScrollAnimation({ initialAnimation: true, delay: 100 })
-     const [islandRef, islandVisible] = useScrollAnimation({ initialAnimation: true, delay: 200 })
-     const [timelineRef, timelineVisible] = useScrollAnimation({ initialAnimation: true, delay: 300 })
-     const [layersRef, layersVisible] = useScrollAnimation({ initialAnimation: true, delay: 400 })
+     const [headerRef, headerVisible] = useScrollAnimation({ initialAnimation: true, delay: 100, waitForPageLoad: true })
+     const [islandRef, islandVisible] = useScrollAnimation({ initialAnimation: true, delay: 200, waitForPageLoad: true })
+     const [timelineRef, timelineVisible] = useScrollAnimation({ initialAnimation: true, delay: 300, waitForPageLoad: true })
+     const [layersRef, layersVisible] = useScrollAnimation({ initialAnimation: true, delay: 400, waitForPageLoad: true })
 
      const islands = [
           { value: 'all', label: 'Semua Pulau' },
@@ -61,8 +61,8 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
                <div
                     ref={headerRef}
                     className={`mb-6 transition-all duration-700 ${headerVisible
-                              ? 'opacity-100 translate-y-0'
-                              : 'opacity-0 -translate-y-4'
+                         ? 'opacity-100 translate-y-0'
+                         : 'opacity-0 -translate-y-4'
                          }`}
                >
                     <div className="flex items-center justify-between mb-4">
@@ -93,8 +93,8 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
                <div
                     ref={islandRef}
                     className={`mb-6 transition-all duration-700 ${islandVisible
-                              ? 'opacity-100 translate-y-0'
-                              : 'opacity-0 -translate-y-4'
+                         ? 'opacity-100 translate-y-0'
+                         : 'opacity-0 -translate-y-4'
                          }`}
                >
                     <label className="block text-background font-semibold mb-2 text-sm">
@@ -117,8 +117,8 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
                <div
                     ref={timelineRef}
                     className={`mb-6 transition-all duration-700 ${timelineVisible
-                              ? 'opacity-100 translate-y-0'
-                              : 'opacity-0 -translate-y-4'
+                         ? 'opacity-100 translate-y-0'
+                         : 'opacity-0 -translate-y-4'
                          }`}
                >
                     <label className="block text-background font-semibold mb-2 text-sm">
@@ -142,8 +142,8 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
                <div
                     ref={layersRef}
                     className={`flex-1 transition-all duration-700 ${layersVisible
-                              ? 'opacity-100 translate-y-0'
-                              : 'opacity-0 -translate-y-4'
+                         ? 'opacity-100 translate-y-0'
+                         : 'opacity-0 -translate-y-4'
                          }`}
                >
                     <label className="block text-background font-semibold mb-3 text-sm">

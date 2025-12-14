@@ -12,7 +12,7 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 const Page = () => {
      // Animation refs for page sections
-     const [bannerRef, bannerVisible] = useScrollAnimation({ delay: 300, initialAnimation: true })
+     const [bannerRef, bannerVisible] = useScrollAnimation({ delay: 500, initialAnimation: true, waitForPageLoad: true })
      const [educationRef, educationVisible] = useScrollAnimation({ delay: 200 })
 
      // Simulation parameters

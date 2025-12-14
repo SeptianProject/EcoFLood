@@ -22,10 +22,10 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
      onSoilAbsorptionChange
 }) => {
      // Animation hooks untuk setiap control
-     const [titleRef, titleVisible] = useScrollAnimation({ initialAnimation: true, delay: 100 })
-     const [forestRef, forestVisible] = useScrollAnimation({ initialAnimation: true, delay: 200 })
-     const [rainfallRef, rainfallVisible] = useScrollAnimation({ initialAnimation: true, delay: 300 })
-     const [soilRef, soilVisible] = useScrollAnimation({ initialAnimation: true, delay: 400 })
+     const [titleRef, titleVisible] = useScrollAnimation({ initialAnimation: true, delay: 100, waitForPageLoad: true })
+     const [forestRef, forestVisible] = useScrollAnimation({ initialAnimation: true, delay: 200, waitForPageLoad: true })
+     const [rainfallRef, rainfallVisible] = useScrollAnimation({ initialAnimation: true, delay: 300, waitForPageLoad: true })
+     const [soilRef, soilVisible] = useScrollAnimation({ initialAnimation: true, delay: 400, waitForPageLoad: true })
 
      return (
           <div className="bg-surface-primary/5 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-lg border-2 border-surface-primary/20">
