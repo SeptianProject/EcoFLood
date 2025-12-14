@@ -24,7 +24,6 @@ const MapComponent: React.FC<MapComponentProps> = ({ location }) => {
                className='h-full w-full rounded-lg shadow-2xl'
           >
                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     url='https://tile.openstreetmap.de/{z}/{x}/{y}.png'
                />
           </MapContainer>

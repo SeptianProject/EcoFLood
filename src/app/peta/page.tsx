@@ -183,11 +183,12 @@ const Page = () => {
      useEffect(() => {
           if (!isMounted || !mapContainerRef.current || mapRef.current) return
 
-          const map = L.map(mapContainerRef.current).setView([-0.7893, 113.9213], 5)
+          const map = L.map(mapContainerRef.current, {
+               zoomControl: false,
+               attributionControl: false
+          }).setView([-0.7893, 113.9213], 5)
 
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-               attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          }).addTo(map)
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
 
           mapRef.current = map
 
@@ -348,7 +349,6 @@ const Page = () => {
                     {/* Floating Report Button */}
                     <ReportButton
                          onClick={() => setIsModalOpen(true)}
-                         reportCount={userReports.filter(r => r.status === 'pending').length}
                     />
 
                     {/* Report Modal */}

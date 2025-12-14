@@ -5,10 +5,9 @@ import { Plus, MessageSquare } from 'lucide-react'
 
 interface ReportButtonProps {
      onClick: () => void
-     reportCount?: number
 }
 
-const ReportButton: React.FC<ReportButtonProps> = ({ onClick, reportCount = 0 }) => {
+const ReportButton: React.FC<ReportButtonProps> = ({ onClick }) => {
      return (
           <button
                onClick={onClick}
@@ -28,13 +27,6 @@ const ReportButton: React.FC<ReportButtonProps> = ({ onClick, reportCount = 0 })
                {/* Plus Icon */}
                <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
 
-               {/* Badge for report count */}
-               {reportCount > 0 && (
-                    <div className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-7 h-7 flex items-center justify-center shadow-lg animate-bounce">
-                         {reportCount > 99 ? '99+' : reportCount}
-                    </div>
-               )}
-     
                <style jsx>{`
                     @keyframes ping {
                          0% {

@@ -71,7 +71,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, onSubmit, cu
           <div className="fixed inset-0 flex items-center justify-center p-4 bg-surface-primary/80 backdrop-blur-sm animate-fadeIn" style={{ zIndex: 2000 }}>
                <div className="bg-background rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-slideUp">
                     {/* Header */}
-                    <div className="sticky top-0 bg-surface-primary text-background px-6 py-4 rounded-t-3xl flex items-center justify-between">
+                    <div className="sticky top-0 bg-surface-primary text-background px-6 py-4 rounded-t-3xl flex items-center justify-between z-10">
                          <div className="flex items-center gap-3">
                               <MapPin className="w-6 h-6 text-primary" />
                               <h2 className="text-2xl font-bold">Laporkan Kejadian</h2>
@@ -101,8 +101,8 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, onSubmit, cu
                                                   type="button"
                                                   onClick={() => setFormData({ ...formData, type: type.value as ReportFormData['type'] })}
                                                   className={`p-4 rounded-xl border-2 transition-all duration-300 ${isSelected
-                                                            ? `${type.color} text-white border-transparent scale-105 shadow-lg`
-                                                            : 'bg-background border-surface-primary/20 text-surface-primary hover:border-surface-primary/40'
+                                                       ? `${type.color} text-white border-transparent scale-105 shadow-lg`
+                                                       : 'bg-background border-surface-primary/20 text-surface-primary hover:border-surface-primary/40'
                                                        }`}
                                              >
                                                   <Icon className="w-6 h-6 mx-auto mb-2" />

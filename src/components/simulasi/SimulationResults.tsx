@@ -111,7 +111,7 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
                     <ul className="space-y-3">
                          {recommendations.map((rec, index) => (
                               <li key={index} className="flex items-start gap-3 text-surface-primary bg-background/40 p-3 rounded-xl">
-                                   <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                                   <CheckCircle2 className="w-5 h-5 text-primary shrink-0mt-0.5" />
                                    <span className="flex-1 text-sm">{rec}</span>
                               </li>
                          ))}
