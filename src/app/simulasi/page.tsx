@@ -12,8 +12,8 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 const Page = () => {
      // Animation refs for page sections
-     const [bannerRef, bannerVisible] = useScrollAnimation({ delay: 500, initialAnimation: true, waitForPageLoad: true })
-     const [educationRef, educationVisible] = useScrollAnimation({ delay: 200 })
+     const [bannerRef, bannerVisible] = useScrollAnimation<HTMLDivElement>({ delay: 500, initialAnimation: true, waitForPageLoad: true })
+     const [educationRef, educationVisible] = useScrollAnimation<HTMLDivElement>({ delay: 200 })
 
      // Simulation parameters
      const [forestCover, setForestCover] = useState(60)

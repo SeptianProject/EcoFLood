@@ -6,10 +6,10 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 export default function FeaturesSection() {
      const router = useRouter()
-     const [headerRef, headerVisible] = useScrollAnimation({ delay: 100 })
-     const [petaRef, petaVisible] = useScrollAnimation({ delay: 200 })
-     const [simulasiRef, simulasiVisible] = useScrollAnimation({ delay: 300 })
-     const [laporanRef, laporanVisible] = useScrollAnimation({ delay: 400 })
+     const [headerRef, headerVisible] = useScrollAnimation<HTMLDivElement>({ delay: 100 })
+     const [petaRef, petaVisible] = useScrollAnimation<HTMLDivElement>({ delay: 200 })
+     const [simulasiRef, simulasiVisible] = useScrollAnimation<HTMLDivElement>({ delay: 300 })
+     const [laporanRef, laporanVisible] = useScrollAnimation<HTMLDivElement>({ delay: 400 })
 
      return (
           <section className='py-20 md:py-32 px-6 md:px-12 lg:px-20 bg-background relative'>
@@ -18,8 +18,8 @@ export default function FeaturesSection() {
                     <div
                          ref={headerRef}
                          className={`text-center mb-16 md:mb-20 transition-all duration-700 ${headerVisible
-                                   ? 'opacity-100 translate-y-0'
-                                   : 'opacity-0 translate-y-8'
+                              ? 'opacity-100 translate-y-0'
+                              : 'opacity-0 translate-y-8'
                               }`}
                     >
                          <div className='inline-block mb-4'>
@@ -42,8 +42,8 @@ export default function FeaturesSection() {
                          <div
                               ref={petaRef}
                               className={`group bg-linear-to-br from-emerald-50 via-green-50 to-teal-50 p-8 md:p-10 rounded-3xl border-2 border-surface-primary/20 hover:border-surface-primary/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 ${petaVisible
-                                        ? 'opacity-100 translate-y-0'
-                                        : 'opacity-0 translate-y-12'
+                                   ? 'opacity-100 translate-y-0'
+                                   : 'opacity-0 translate-y-12'
                                    }`}
                          >
                               <div className='flex items-start gap-5 mb-6'>
@@ -84,8 +84,8 @@ export default function FeaturesSection() {
                          <div
                               ref={simulasiRef}
                               className={`group bg-linear-to-br from-blue-50 via-cyan-50 to-sky-50 p-8 md:p-10 rounded-3xl border-2 border-blue-300/30 hover:border-blue-400/60 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 ${simulasiVisible
-                                        ? 'opacity-100 translate-y-0'
-                                        : 'opacity-0 translate-y-12'
+                                   ? 'opacity-100 translate-y-0'
+                                   : 'opacity-0 translate-y-12'
                                    }`}
                          >
                               <div className='flex items-start gap-5 mb-6'>
@@ -126,8 +126,8 @@ export default function FeaturesSection() {
                          <div
                               ref={laporanRef}
                               className={`group bg-linear-to-br from-orange-50 via-amber-50 to-yellow-50 p-8 md:p-10 rounded-3xl border-2 border-accent/20 hover:border-accent/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 lg:col-span-2 ${laporanVisible
-                                        ? 'opacity-100 translate-y-0'
-                                        : 'opacity-0 translate-y-12'
+                                   ? 'opacity-100 translate-y-0'
+                                   : 'opacity-0 translate-y-12'
                                    }`}
                          >
                               <div className='flex flex-col lg:flex-row lg:items-start gap-8'>

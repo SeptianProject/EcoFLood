@@ -36,10 +36,10 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
      const router = useRouter()
 
      // Animation hooks untuk setiap section
-     const [headerRef, headerVisible] = useScrollAnimation({ initialAnimation: true, delay: 100, waitForPageLoad: true })
-     const [islandRef, islandVisible] = useScrollAnimation({ initialAnimation: true, delay: 200, waitForPageLoad: true })
-     const [timelineRef, timelineVisible] = useScrollAnimation({ initialAnimation: true, delay: 300, waitForPageLoad: true })
-     const [layersRef, layersVisible] = useScrollAnimation({ initialAnimation: true, delay: 400, waitForPageLoad: true })
+     const [headerRef, headerVisible] = useScrollAnimation<HTMLDivElement>({ initialAnimation: true, delay: 100, waitForPageLoad: true })
+     const [islandRef, islandVisible] = useScrollAnimation<HTMLDivElement>({ initialAnimation: true, delay: 200, waitForPageLoad: true })
+     const [timelineRef, timelineVisible] = useScrollAnimation<HTMLDivElement>({ initialAnimation: true, delay: 300, waitForPageLoad: true })
+     const [layersRef, layersVisible] = useScrollAnimation<HTMLDivElement>({ initialAnimation: true, delay: 400, waitForPageLoad: true })
 
      const islands = [
           { value: 'all', label: 'Semua Pulau' },

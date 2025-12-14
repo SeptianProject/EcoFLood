@@ -9,7 +9,7 @@ interface ReportButtonProps {
 }
 
 const ReportButton: React.FC<ReportButtonProps> = ({ onClick }) => {
-     const [buttonRef, buttonVisible] = useScrollAnimation({ initialAnimation: true, delay: 600, waitForPageLoad: true })
+     const [buttonRef, buttonVisible] = useScrollAnimation<HTMLButtonElement>({ initialAnimation: true, delay: 600, waitForPageLoad: true })
 
      return (
           <button

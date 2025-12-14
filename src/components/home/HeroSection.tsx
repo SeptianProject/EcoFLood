@@ -7,13 +7,13 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 export default function HeroSection() {
      const router = useRouter()
-     const [badgeRef, badgeVisible] = useScrollAnimation({ delay: 100, initialAnimation: true, waitForPageLoad: true })
-     const [headingRef, headingVisible] = useScrollAnimation({ delay: 300, initialAnimation: true, waitForPageLoad: true })
-     const [descriptionRef, descriptionVisible] = useScrollAnimation({ delay: 500, initialAnimation: true, waitForPageLoad: true })
-     const [featuresRef, featuresVisible] = useScrollAnimation({ delay: 700, initialAnimation: true, waitForPageLoad: true })
-     const [buttonsRef, buttonsVisible] = useScrollAnimation({ delay: 900, initialAnimation: true, waitForPageLoad: true })
-     const [trustRef, trustVisible] = useScrollAnimation({ delay: 1100, initialAnimation: true, waitForPageLoad: true })
-     const [imageRef, imageVisible] = useScrollAnimation({ delay: 400, initialAnimation: true, waitForPageLoad: true })
+     const [badgeRef, badgeVisible] = useScrollAnimation<HTMLDivElement>({ delay: 100, initialAnimation: true, waitForPageLoad: true })
+     const [headingRef, headingVisible] = useScrollAnimation<HTMLHeadingElement>({ delay: 300, initialAnimation: true, waitForPageLoad: true })
+     const [descriptionRef, descriptionVisible] = useScrollAnimation<HTMLParagraphElement>({ delay: 500, initialAnimation: true, waitForPageLoad: true })
+     const [featuresRef, featuresVisible] = useScrollAnimation<HTMLDivElement>({ delay: 700, initialAnimation: true, waitForPageLoad: true })
+     const [buttonsRef, buttonsVisible] = useScrollAnimation<HTMLDivElement>({ delay: 900, initialAnimation: true, waitForPageLoad: true })
+     const [trustRef, trustVisible] = useScrollAnimation<HTMLDivElement>({ delay: 1100, initialAnimation: true, waitForPageLoad: true })
+     const [imageRef, imageVisible] = useScrollAnimation<HTMLDivElement>({ delay: 400, initialAnimation: true, waitForPageLoad: true })
 
      return (
           <section className='relative min-h-screen flex items-center px-6 md:px-12 lg:px-20 pt-24 md:pt-32 pb-12 md:pb-20 overflow-hidden'>

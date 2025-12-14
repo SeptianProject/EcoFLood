@@ -4,11 +4,11 @@ import { Activity } from 'lucide-react'
 import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 export default function ProcessSection() {
-     const [headerRef, headerVisible] = useScrollAnimation({ delay: 100 })
-     const [step1Ref, step1Visible] = useScrollAnimation({ delay: 200 })
-     const [step2Ref, step2Visible] = useScrollAnimation({ delay: 300 })
-     const [step3Ref, step3Visible] = useScrollAnimation({ delay: 400 })
-     const [step4Ref, step4Visible] = useScrollAnimation({ delay: 500 })
+     const [headerRef, headerVisible] = useScrollAnimation<HTMLDivElement>({ delay: 100 })
+     const [step1Ref, step1Visible] = useScrollAnimation<HTMLDivElement>({ delay: 200 })
+     const [step2Ref, step2Visible] = useScrollAnimation<HTMLDivElement>({ delay: 300 })
+     const [step3Ref, step3Visible] = useScrollAnimation<HTMLDivElement>({ delay: 400 })
+     const [step4Ref, step4Visible] = useScrollAnimation<HTMLDivElement>({ delay: 500 })
 
      return (
           <section className='py-20 md:py-24 lg:py-32 px-6 md:px-12 lg:px-20 bg-linear-to-b from-emerald-50 to-background'>
@@ -17,8 +17,8 @@ export default function ProcessSection() {
                     <div
                          ref={headerRef}
                          className={`text-center mb-12 md:mb-16 transition-all duration-700 ${headerVisible
-                                   ? 'opacity-100 translate-y-0'
-                                   : 'opacity-0 translate-y-8'
+                              ? 'opacity-100 translate-y-0'
+                              : 'opacity-0 translate-y-8'
                               }`}
                     >
                          <div className='inline-block mb-4'>
@@ -41,8 +41,8 @@ export default function ProcessSection() {
                          <div
                               ref={step1Ref}
                               className={`text-center p-6 bg-white rounded-2xl border border-gray-200 hover:shadow-lg transition-all duration-700 ${step1Visible
-                                        ? 'opacity-100 translate-y-0'
-                                        : 'opacity-0 translate-y-12'
+                                   ? 'opacity-100 translate-y-0'
+                                   : 'opacity-0 translate-y-12'
                                    }`}
                          >
                               <div className='w-16 h-16 bg-surface-primary rounded-full flex items-center justify-center mx-auto mb-4 shadow-md'>
@@ -58,8 +58,8 @@ export default function ProcessSection() {
                          <div
                               ref={step2Ref}
                               className={`text-center p-6 bg-white rounded-2xl border border-gray-200 hover:shadow-lg transition-all duration-700 ${step2Visible
-                                        ? 'opacity-100 translate-y-0'
-                                        : 'opacity-0 translate-y-12'
+                                   ? 'opacity-100 translate-y-0'
+                                   : 'opacity-0 translate-y-12'
                                    }`}
                          >
                               <div className='w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 shadow-md'>
@@ -75,8 +75,8 @@ export default function ProcessSection() {
                          <div
                               ref={step3Ref}
                               className={`text-center p-6 bg-white rounded-2xl border border-gray-200 hover:shadow-lg transition-all duration-700 ${step3Visible
-                                        ? 'opacity-100 translate-y-0'
-                                        : 'opacity-0 translate-y-12'
+                                   ? 'opacity-100 translate-y-0'
+                                   : 'opacity-0 translate-y-12'
                                    }`}
                          >
                               <div className='w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 shadow-md'>
@@ -92,8 +92,8 @@ export default function ProcessSection() {
                          <div
                               ref={step4Ref}
                               className={`text-center p-6 bg-white rounded-2xl border border-gray-200 hover:shadow-lg transition-all duration-700 ${step4Visible
-                                        ? 'opacity-100 translate-y-0'
-                                        : 'opacity-0 translate-y-12'
+                                   ? 'opacity-100 translate-y-0'
+                                   : 'opacity-0 translate-y-12'
                                    }`}
                          >
                               <div className='w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md'>

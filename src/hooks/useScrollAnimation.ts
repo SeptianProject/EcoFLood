@@ -12,7 +12,7 @@ interface UseScrollAnimationOptions {
      waitForPageLoad?: boolean // Wait for page loader to finish before animating
 }
 
-export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
+export function useScrollAnimation<T extends HTMLElement = HTMLElement>(options: UseScrollAnimationOptions = {}) {
      const {
           threshold = 0.1,
           triggerOnce = true,
@@ -22,7 +22,7 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
           waitForPageLoad = false,
      } = options
 
-     const elementRef = useRef<HTMLDivElement>(null)
+     const elementRef = useRef<T>(null)
      const [isVisible, setIsVisible] = useState(false)
      const { isPageLoaded } = usePageLoad()
 
