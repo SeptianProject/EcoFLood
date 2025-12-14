@@ -56,6 +56,7 @@ interface UserReport {
      lat: number
      lng: number
      location: string
+     island: string
      type: 'flood' | 'deforestation' | 'fire' | 'other'
      description: string
      date: string

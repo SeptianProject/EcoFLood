@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useMemo } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import MapSidebar from '@/components/peta/MapSidebar'
@@ -66,6 +66,7 @@ interface UserReport {
      lat: number
      lng: number
      location: string
+     island: string
      type: 'flood' | 'deforestation' | 'fire' | 'other'
      description: string
      date: string
@@ -79,6 +80,7 @@ const dummyUserReports: UserReport[] = [
           lat: -6.2088,
           lng: 106.8456,
           location: 'Jakarta Utara',
+          island: 'java',
           type: 'flood',
           description: 'Banjir setinggi 1 meter menggenangi pemukiman warga',
           date: '2024-12-10',
@@ -89,6 +91,7 @@ const dummyUserReports: UserReport[] = [
           lat: -0.9517,
           lng: 116.0921,
           location: 'Kutai Kartanegara, Kalimantan',
+          island: 'kalimantan',
           type: 'deforestation',
           description: 'Pembukaan lahan hutan untuk perkebunan sawit',
           date: '2024-11-25',
@@ -99,6 +102,7 @@ const dummyUserReports: UserReport[] = [
           lat: 0.5071,
           lng: 101.4478,
           location: 'Riau',
+          island: 'sumatra',
           type: 'fire',
           description: 'Kebakaran lahan gambut di area perkebunan',
           date: '2024-12-05',
@@ -109,6 +113,7 @@ const dummyUserReports: UserReport[] = [
           lat: -7.2575,
           lng: 112.7521,
           location: 'Surabaya',
+          island: 'java',
           type: 'flood',
           description: 'Banjir rob merendam jalan utama pesisir',
           date: '2024-12-12',
@@ -119,6 +124,7 @@ const dummyUserReports: UserReport[] = [
           lat: -3.3194,
           lng: 114.5901,
           location: 'Banjarmasin',
+          island: 'kalimantan',
           type: 'flood',
           description: 'Luapan sungai Martapura menggenangi beberapa desa',
           date: '2024-11-30',
@@ -248,13 +254,27 @@ const Page = () => {
           }))
      }
 
+     // Helper function to determine island from coordinates
+     const getIslandFromCoords = (lat: number, lng: number): string => {
+          if (lng < 108) return 'sumatra'
+          if (lng > 108 && lng < 120 && lat > -5) return 'kalimantan'
+          if (lng > 105 && lng < 116 && lat < -5) return 'java'
+          if (lng > 119 && lng < 126) return 'sulawesi'
+          if (lng > 130) return 'papua'
+          return 'other'
+     }
+
      // Handle report submission
      const handleReportSubmit = (reportData: ReportFormData) => {
+          const reportLat = mapCenter?.lat || reportData.lat
+          const reportLng = mapCenter?.lng || reportData.lng
+
           const newReport: UserReport = {
                id: `ur${Date.now()}`,
-               lat: mapCenter?.lat || reportData.lat,
-               lng: mapCenter?.lng || reportData.lng,
+               lat: reportLat,
+               lng: reportLng,
                location: reportData.location,
+               island: getIslandFromCoords(reportLat, reportLng),
                type: reportData.type,
                description: reportData.description,
                date: new Date().toISOString().split('T')[0],
@@ -298,6 +318,17 @@ const Page = () => {
           }
      }, [isMounted])
 
+     // Filter data based on selected island
+     const filteredDeforestationData = useMemo(() => {
+          if (selectedIsland === 'all') return deforestationData
+          return deforestationData.filter(item => item.island === selectedIsland)
+     }, [deforestationData, selectedIsland])
+
+     const filteredUserReports = useMemo(() => {
+          if (selectedIsland === 'all') return userReports
+          return userReports.filter(report => report.island === selectedIsland)
+     }, [userReports, selectedIsland])
+
      if (!isMounted) {
           return (
                <div className='h-screen w-full flex items-center justify-center bg-background text-surface-primary'>
@@ -339,11 +370,11 @@ const Page = () => {
                          layers={layers}
                          selectedIsland={selectedIsland}
                          selectedYear={selectedYear}
-                         deforestationData={deforestationData}
+                         deforestationData={filteredDeforestationData}
                          floodData={floodData}
                          fireData={fireData}
                          biodiversityData={biodiversityData}
-                         userReports={userReports}
+                         userReports={filteredUserReports}
                     />
 
                     {/* Floating Report Button */}
