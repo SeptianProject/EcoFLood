@@ -13,13 +13,13 @@ const Page = () => {
     <div className='bg-background'>
       <Header />
 
-      {/* Hero Section - Enhanced */}
-      <section className='relative px-6 md:px-12 lg:px-20 py-20 md:py-24 lg:py-32 overflow-hidden'>
+      {/* Hero Section - Enhanced Full Screen */}
+      <section className='relative min-h-screen flex items-center px-6 md:px-12 lg:px-20 pt-24 md:pt-32 pb-12 md:pb-20 overflow-hidden'>
         {/* Decorative Background */}
         <div className='absolute top-1/4 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl' />
         <div className='absolute bottom-1/4 left-0 w-80 h-80 bg-surface-primary/5 rounded-full blur-3xl' />
 
-        <div className='max-w-7xl mx-auto relative'>
+        <div className='max-w-7xl mx-auto relative w-full'>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center'>
             {/* Left Content */}
             <div className='flex flex-col items-start gap-y-6 order-2 lg:order-1'>
@@ -86,10 +86,10 @@ const Page = () => {
               <div className='flex items-center gap-6 mt-4 pt-4 border-t border-gray-200'>
                 <div className='flex items-center gap-2'>
                   <div className='flex -space-x-2'>
-                    <div className='w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 border-2 border-background' />
-                    <div className='w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-cyan-500 border-2 border-background' />
-                    <div className='w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 border-2 border-background' />
-                    <div className='w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 border-2 border-background' />
+                    <div className='w-8 h-8 rounded-full bg-linear-to-br from-emerald-400 to-teal-500 border-2 border-background' />
+                    <div className='w-8 h-8 rounded-full bg-linear-to-br from-blue-400 to-cyan-500 border-2 border-background' />
+                    <div className='w-8 h-8 rounded-full bg-linear-to-br from-orange-400 to-amber-500 border-2 border-background' />
+                    <div className='w-8 h-8 rounded-full bg-linear-to-br from-purple-400 to-pink-500 border-2 border-background' />
                   </div>
                   <div className='text-sm'>
                     <p className='font-bold text-gray-900'>500+ Pengguna</p>
@@ -115,17 +115,17 @@ const Page = () => {
 
             {/* Right Content - Hero Image */}
             <div className='relative order-1 lg:order-2'>
-              <div className='relative w-full rounded-3xl overflow-hidden shadow-2xl'>
+              <div className='relative w-full h-112.5 sm:h-137.5 lg:h-162.5 xl:h-175 rounded-3xl overflow-hidden shadow-2xl'>
                 <Image
                   src="/hero-image.png"
                   alt="Banjir dan dampak deforestasi"
-                  width={600}
-                  height={500}
-                  className='w-full h-auto object-cover'
+                  fill
+                  className='object-cover'
                   priority
+                  sizes='(max-width: 768px) 100vw, 50vw'
                 />
                 {/* Info Card Overlay */}
-                <div className='absolute bottom-6 right-6 bg-background/95 backdrop-blur-md rounded-2xl p-4 sm:p-5 shadow-xl border border-gray-200/50 max-w-[280px] sm:max-w-xs'>
+                <div className='absolute bottom-6 right-6 bg-background/95 backdrop-blur-md rounded-2xl p-4 sm:p-5 shadow-xl border border-gray-200/50 max-w-70 sm:max-w-xs'>
                   <div className='flex items-start gap-3 mb-2'>
                     <div className='w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center shrink-0'>
                       <AlertTriangle className='text-accent' size={18} />
@@ -145,7 +145,7 @@ const Page = () => {
       </section>
 
       {/* Why It Matters Section */}
-      <section className='py-20 md:py-24 lg:py-32 px-6 md:px-12 lg:px-20 bg-gradient-to-b from-purple-50 via-blue-50/30 to-background'>
+      <section className='py-20 md:py-24 lg:py-32 px-6 md:px-12 lg:px-20 bg-linear-to-b from-purple-50 via-blue-50/30 to-background'>
         <div className='max-w-7xl mx-auto'>
           {/* Section Header */}
           <div className='text-center mb-12 md:mb-16'>
@@ -165,7 +165,7 @@ const Page = () => {
 
           {/* Cards Grid */}
           <div className='grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8'>
-            <div className='group bg-gradient-to-br from-emerald-50 to-teal-50 p-6 md:p-8 rounded-2xl border border-emerald-200/50 hover:shadow-2xl hover:border-emerald-300 transition-all duration-300 hover:-translate-y-2'>
+            <div className='group bg-linear-to-br from-emerald-50 to-teal-50 p-6 md:p-8 rounded-2xl border border-emerald-200/50 hover:shadow-2xl hover:border-emerald-300 transition-all duration-300 hover:-translate-y-2'>
               <div className='w-14 h-14 bg-surface-primary rounded-xl flex items-center justify-center mb-5 shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-300'>
                 <Trees className='text-background' size={28} />
               </div>
@@ -184,7 +184,7 @@ const Page = () => {
               </div>
             </div>
 
-            <div className='group bg-gradient-to-br from-teal-50 to-cyan-50 p-6 md:p-8 rounded-2xl border border-teal-200/50 hover:shadow-2xl hover:border-teal-300 transition-all duration-300 hover:-translate-y-2'>
+            <div className='group bg-linear-to-br from-teal-50 to-cyan-50 p-6 md:p-8 rounded-2xl border border-teal-200/50 hover:shadow-2xl hover:border-teal-300 transition-all duration-300 hover:-translate-y-2'>
               <div className='w-14 h-14 bg-surface-primary rounded-xl flex items-center justify-center mb-5 shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-300'>
                 <Shield className='text-background' size={28} />
               </div>
@@ -203,7 +203,7 @@ const Page = () => {
               </div>
             </div>
 
-            <div className='group bg-gradient-to-br from-cyan-50 to-blue-50 p-6 md:p-8 rounded-2xl border border-cyan-200/50 hover:shadow-2xl hover:border-cyan-300 transition-all duration-300 hover:-translate-y-2'>
+            <div className='group bg-linear-to-br from-cyan-50 to-blue-50 p-6 md:p-8 rounded-2xl border border-cyan-200/50 hover:shadow-2xl hover:border-cyan-300 transition-all duration-300 hover:-translate-y-2'>
               <div className='w-14 h-14 bg-surface-primary rounded-xl flex items-center justify-center mb-5 shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-300'>
                 <Users className='text-background' size={28} />
               </div>
@@ -247,9 +247,9 @@ const Page = () => {
           {/* Features Grid */}
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8'>
             {/* Peta Feature */}
-            <div className='group bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 p-8 md:p-10 rounded-3xl border-2 border-surface-primary/20 hover:border-surface-primary/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1'>
+            <div className='group bg-linear-to-br from-emerald-50 via-green-50 to-teal-50 p-8 md:p-10 rounded-3xl border-2 border-surface-primary/20 hover:border-surface-primary/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1'>
               <div className='flex items-start gap-5 mb-6'>
-                <div className='w-16 h-16 bg-surface-primary rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300'>
+                <div className='w-16 h-16 bg-surface-primary rounded-2xl flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300'>
                   <MapIcon className='text-background' size={30} />
                 </div>
                 <div>
@@ -262,15 +262,15 @@ const Page = () => {
               </p>
               <ul className='space-y-4 mb-8'>
                 <li className='flex items-start gap-3 text-sm md:text-base'>
-                  <CheckCircle2 className='text-surface-primary flex-shrink-0 mt-0.5' size={22} />
+                  <CheckCircle2 className='text-surface-primary shrink-0 mt-0.5' size={22} />
                   <span className='text-gray-700'>Data deforestasi terintegrasi dari GFW</span>
                 </li>
                 <li className='flex items-start gap-3 text-sm md:text-base'>
-                  <CheckCircle2 className='text-surface-primary flex-shrink-0 mt-0.5' size={22} />
+                  <CheckCircle2 className='text-surface-primary shrink-0 mt-0.5' size={22} />
                   <span className='text-gray-700'>Laporan banjir dari masyarakat</span>
                 </li>
                 <li className='flex items-start gap-3 text-sm md:text-base'>
-                  <CheckCircle2 className='text-surface-primary flex-shrink-0 mt-0.5' size={22} />
+                  <CheckCircle2 className='text-surface-primary shrink-0 mt-0.5' size={22} />
                   <span className='text-gray-700'>Filter berdasarkan pulau dan jenis bencana</span>
                 </li>
               </ul>
@@ -283,9 +283,9 @@ const Page = () => {
             </div>
 
             {/* Simulasi Feature */}
-            <div className='group bg-gradient-to-br from-blue-50 via-cyan-50 to-sky-50 p-8 md:p-10 rounded-3xl border-2 border-blue-300/30 hover:border-blue-400/60 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1'>
+            <div className='group bg-linear-to-br from-blue-50 via-cyan-50 to-sky-50 p-8 md:p-10 rounded-3xl border-2 border-blue-300/30 hover:border-blue-400/60 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1'>
               <div className='flex items-start gap-5 mb-6'>
-                <div className='w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300'>
+                <div className='w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300'>
                   <Activity className='text-white' size={30} />
                 </div>
                 <div>
@@ -298,15 +298,15 @@ const Page = () => {
               </p>
               <ul className='space-y-4 mb-8'>
                 <li className='flex items-start gap-3 text-sm md:text-base'>
-                  <CheckCircle2 className='text-blue-600 flex-shrink-0 mt-0.5' size={22} />
+                  <CheckCircle2 className='text-blue-600 shrink-0 mt-0.5' size={22} />
                   <span className='text-gray-700'>Prediksi berbasis machine learning</span>
                 </li>
                 <li className='flex items-start gap-3 text-sm md:text-base'>
-                  <CheckCircle2 className='text-blue-600 flex-shrink-0 mt-0.5' size={22} />
+                  <CheckCircle2 className='text-blue-600 shrink-0 mt-0.5' size={22} />
                   <span className='text-gray-700'>Data cuaca real-time</span>
                 </li>
                 <li className='flex items-start gap-3 text-sm md:text-base'>
-                  <CheckCircle2 className='text-blue-600 flex-shrink-0 mt-0.5' size={22} />
+                  <CheckCircle2 className='text-blue-600 shrink-0 mt-0.5' size={22} />
                   <span className='text-gray-700'>Skenario berbagai tingkat deforestasi</span>
                 </li>
               </ul>
@@ -319,11 +319,11 @@ const Page = () => {
             </div>
 
             {/* Laporan Feature */}
-            <div className='group bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 p-8 md:p-10 rounded-3xl border-2 border-accent/20 hover:border-accent/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 lg:col-span-2'>
+            <div className='group bg-linear-to-br from-orange-50 via-amber-50 to-yellow-50 p-8 md:p-10 rounded-3xl border-2 border-accent/20 hover:border-accent/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 lg:col-span-2'>
               <div className='flex flex-col lg:flex-row lg:items-start gap-8'>
                 <div className='flex-1'>
                   <div className='flex items-start gap-5 mb-6'>
-                    <div className='w-16 h-16 bg-accent rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300'>
+                    <div className='w-16 h-16 bg-accent rounded-2xl flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300'>
                       <MessageSquare className='text-white' size={30} />
                     </div>
                     <div>
@@ -336,19 +336,19 @@ const Page = () => {
                   </p>
                   <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8'>
                     <div className='flex items-start gap-3 text-sm md:text-base'>
-                      <CheckCircle2 className='text-accent flex-shrink-0 mt-0.5' size={22} />
+                      <CheckCircle2 className='text-accent shrink-0 mt-0.5' size={22} />
                       <span className='text-gray-700'>Upload foto bukti</span>
                     </div>
                     <div className='flex items-start gap-3 text-sm md:text-base'>
-                      <CheckCircle2 className='text-accent flex-shrink-0 mt-0.5' size={22} />
+                      <CheckCircle2 className='text-accent shrink-0 mt-0.5' size={22} />
                       <span className='text-gray-700'>Lokasi otomatis terdeteksi</span>
                     </div>
                     <div className='flex items-start gap-3 text-sm md:text-base'>
-                      <CheckCircle2 className='text-accent flex-shrink-0 mt-0.5' size={22} />
+                      <CheckCircle2 className='text-accent shrink-0 mt-0.5' size={22} />
                       <span className='text-gray-700'>Verifikasi admin</span>
                     </div>
                     <div className='flex items-start gap-3 text-sm md:text-base'>
-                      <CheckCircle2 className='text-accent flex-shrink-0 mt-0.5' size={22} />
+                      <CheckCircle2 className='text-accent shrink-0 mt-0.5' size={22} />
                       <span className='text-gray-700'>Tampil di peta interaktif</span>
                     </div>
                   </div>
@@ -366,7 +366,7 @@ const Page = () => {
       </section>
 
       {/* Process Section */}
-      <section className='py-20 md:py-24 lg:py-32 px-6 md:px-12 lg:px-20 bg-gradient-to-b from-emerald-50 to-background'>
+      <section className='py-20 md:py-24 lg:py-32 px-6 md:px-12 lg:px-20 bg-linear-to-b from-emerald-50 to-background'>
         <div className='max-w-7xl mx-auto'>
           {/* Section Header */}
           <div className='text-center mb-12 md:mb-16'>
@@ -478,7 +478,7 @@ const Page = () => {
       </section>
 
       {/* CTA Section */}
-      <section className='relative py-20 md:py-24 lg:py-32 px-6 md:px-12 lg:px-20 bg-gradient-to-br from-surface-primary via-emerald-800 to-teal-900 overflow-hidden'>
+      <section className='relative py-20 md:py-24 lg:py-32 px-6 md:px-12 lg:px-20 bg-linear-to-br from-surface-primary via-emerald-800 to-teal-900 overflow-hidden'>
         {/* Background Pattern */}
         <div className='absolute inset-0 opacity-5'>
           <div className='absolute inset-0' style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }} />
