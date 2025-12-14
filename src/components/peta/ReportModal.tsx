@@ -1,7 +1,13 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { MapPin, X, Upload, Loader2, MapPinned } from 'lucide-react'
+import { MapPin, X, Loader2, Info } from 'lucide-react'
+import { type DisasterType } from '@/interface'
+import LocationInput from '@/components/laporan/LocationInput'
+import DisasterTypeSelector from '@/components/laporan/DisasterTypeSelector'
+import DescriptionInput from '@/components/laporan/DescriptionInput'
+import ImageUploadField from '@/components/laporan/ImageUploadField'
+import ValidationHelper from '@/components/laporan/ValidationHelper'
 
 interface ReportModalProps {
      isOpen: boolean
@@ -15,6 +21,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, onSuccess, c
           latitude: currentPosition?.lat.toString() || '',
           longitude: currentPosition?.lng.toString() || '',
           description: '',
+          type_disaster: '' as DisasterType | '',
      })
      const [selectedImage, setSelectedImage] = useState<File | null>(null)
      const [imagePreview, setImagePreview] = useState<string | null>(null)
@@ -88,7 +95,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, onSuccess, c
           setError(null)
           setIsSubmitting(true)
 
-          if (!formData.latitude || !formData.longitude || !formData.description || !selectedImage) {
+          if (!formData.latitude || !formData.longitude || !formData.description || !selectedImage || !formData.type_disaster) {
                setError("Semua field wajib diisi!")
                setIsSubmitting(false)
                return
@@ -99,6 +106,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, onSuccess, c
                formDataToSend.append("latitude", formData.latitude)
                formDataToSend.append("longitude", formData.longitude)
                formDataToSend.append("description", formData.description)
+               formDataToSend.append("type_disaster", formData.type_disaster)
                formDataToSend.append("imageUrl", selectedImage)
 
                const response = await fetch("/api/report-disaster", {
@@ -120,7 +128,8 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, onSuccess, c
                setFormData({
                     latitude: currentPosition?.lat.toFixed(6) || '',
                     longitude: currentPosition?.lng.toFixed(6) || '',
-                    description: ''
+                    description: '',
+                    type_disaster: ''
                })
                setSelectedImage(null)
                setImagePreview(null)
@@ -163,142 +172,47 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, onSuccess, c
                          )}
 
                          {/* Location Section */}
-                         <div className="space-y-3">
-                              <label className="block text-surface-primary font-semibold mb-2">
-                                   Lokasi Kejadian <span className="text-accent">*</span>
-                              </label>
+                         <LocationInput
+                              latitude={formData.latitude}
+                              longitude={formData.longitude}
+                              isGettingLocation={isGettingLocation}
+                              onLatitudeChange={(value) => setFormData({ ...formData, latitude: value })}
+                              onLongitudeChange={(value) => setFormData({ ...formData, longitude: value })}
+                              onGetLocation={handleGetLocation}
+                         />
 
-                              <button
-                                   type="button"
-                                   onClick={handleGetLocation}
-                                   disabled={isGettingLocation}
-                                   className="w-full px-4 py-3 bg-primary/20 hover:bg-primary/30 border-2 border-primary/40 rounded-xl text-surface-primary font-semibold flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
-                              >
-                                   {isGettingLocation ? (
-                                        <>
-                                             <Loader2 className="w-5 h-5 animate-spin" />
-                                             Mendapatkan Lokasi...
-                                        </>
-                                   ) : (
-                                        <>
-                                             <MapPinned className="w-5 h-5" />
-                                             Gunakan Lokasi Saya
-                                        </>
-                                   )}
-                              </button>
-
-                              <div className="grid grid-cols-2 gap-3">
-                                   <div>
-                                        <label className="block text-sm text-surface-primary/70 mb-1">Latitude</label>
-                                        <input
-                                             type="text"
-                                             value={formData.latitude}
-                                             onChange={(e) => setFormData({ ...formData, latitude: e.target.value })}
-                                             placeholder="-6.2088"
-                                             className="w-full px-4 py-2 bg-background rounded-lg border-2 border-surface-primary/20 focus:border-primary focus:outline-none transition-colors text-surface-primary"
-                                             required
-                                        />
-                                   </div>
-                                   <div>
-                                        <label className="block text-sm text-surface-primary/70 mb-1">Longitude</label>
-                                        <input
-                                             type="text"
-                                             value={formData.longitude}
-                                             onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
-                                             placeholder="106.8456"
-                                             className="w-full px-4 py-2 bg-background rounded-lg border-2 border-surface-primary/20 focus:border-primary focus:outline-none transition-colors text-surface-primary"
-                                             required
-                                        />
-                                   </div>
-                              </div>
-
-                              {formData.latitude && formData.longitude && (
-                                   <p className="text-xs text-surface-primary/60">
-                                        📍 Koordinat: {formData.latitude}, {formData.longitude}
-                                   </p>
-                              )}
-                         </div>
+                         {/* Disaster Type Selection */}
+                         <DisasterTypeSelector
+                              selectedType={formData.type_disaster}
+                              onSelectType={(type) => setFormData({ ...formData, type_disaster: type })}
+                         />
 
                          {/* Description */}
-                         <div>
-                              <label className="block text-surface-primary font-semibold mb-2">
-                                   Deskripsi Kondisi Lingkungan <span className="text-accent">*</span>
-                              </label>
-                              <textarea
-                                   required
-                                   value={formData.description}
-                                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                   placeholder="Jelaskan kondisi yang Anda temukan (contoh: kerusakan hutan, aliran air tersumbat, erosi kecil, dll)"
-                                   rows={4}
-                                   className={`w-full px-4 py-3 bg-background rounded-xl border-2 focus:outline-none transition-colors text-surface-primary resize-none ${formData.description.length > 0 && formData.description.length < 20
-                                             ? 'border-accent/50 focus:border-accent'
-                                             : formData.description.length >= 20
-                                                  ? 'border-green-500/50 focus:border-green-500'
-                                                  : 'border-surface-primary/20 focus:border-primary'
-                                        }`}
-                              />
-                              <p className={`text-xs mt-1 ${formData.description.length >= 20
-                                        ? 'text-green-600'
-                                        : formData.description.length > 0
-                                             ? 'text-accent'
-                                             : 'text-surface-primary/60'
-                                   }`}>
-                                   {formData.description.length >= 20 ? '✓' : '○'} Minimal 20 karakter ({formData.description.length}/20)
-                              </p>
-                         </div>
+                         <DescriptionInput
+                              value={formData.description}
+                              onChange={(value) => setFormData({ ...formData, description: value })}
+                         />
 
                          {/* Image Upload */}
-                         <div>
-                              <label className="block text-surface-primary font-semibold mb-2">
-                                   Foto Kondisi Lingkungan <span className="text-accent">*</span>
-                              </label>
-                              <div className={`border-2 border-dashed rounded-xl p-6 text-center hover:border-primary transition-colors cursor-pointer ${selectedImage ? 'border-green-500/50' : 'border-surface-primary/30'
-                                   }`}>
-                                   <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleImageChange}
-                                        className="hidden"
-                                        id="image-upload"
-                                        required
-                                   />
-                                   <label htmlFor="image-upload" className="cursor-pointer">
-                                        {imagePreview ? (
-                                             <div className="space-y-2">
-                                                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                  <img
-                                                       src={imagePreview}
-                                                       alt="Preview"
-                                                       className="max-h-48 mx-auto rounded-lg object-cover"
-                                                  />
-                                                  <p className="text-sm text-green-600 font-semibold">
-                                                       ✓ {selectedImage?.name}
-                                                  </p>
-                                                  <p className="text-xs text-surface-primary/60">
-                                                       Klik untuk mengganti gambar
-                                                  </p>
-                                             </div>
-                                        ) : (
-                                             <>
-                                                  <Upload className="w-8 h-8 mx-auto mb-2 text-surface-primary/60" />
-                                                  <p className="text-sm text-surface-primary font-semibold">
-                                                       Klik untuk mengunggah foto
-                                                  </p>
-                                                  <p className="text-xs text-surface-primary/60 mt-1">
-                                                       JPG, PNG, atau JPEG (Maks. 5MB)
-                                                  </p>
-                                             </>
-                                        )}
-                                   </label>
-                              </div>
-                         </div>
+                         <ImageUploadField
+                              selectedImage={selectedImage}
+                              imagePreview={imagePreview}
+                              onImageChange={handleImageChange}
+                         />
 
                          {/* Info Box */}
-                         <div className="bg-primary/10 border-2 border-primary/30 rounded-xl p-4">
-                              <p className="text-sm text-surface-primary">
-                                   <span className="font-semibold">💡 Tips:</span> Pastikan laporan Anda akurat dan
-                                   sertakan foto yang jelas. Laporan akan diverifikasi oleh admin sebelum ditampilkan di peta.
-                              </p>
+                         <div className="bg-primary/10 border-l-4 border-primary rounded-xl p-4">
+                              <div className="flex items-start gap-3">
+                                   <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                                        <Info className="w-4 h-4 text-surface-primary" />
+                                   </div>
+                                   <div>
+                                        <p className="text-sm font-semibold text-surface-primary mb-1">Tips Laporan</p>
+                                        <p className="text-xs text-surface-primary/70 leading-relaxed">
+                                             Pastikan laporan Anda akurat dan sertakan foto yang jelas. Laporan akan diverifikasi oleh admin sebelum ditampilkan di peta.
+                                        </p>
+                                   </div>
+                              </div>
                          </div>
 
                          {/* Submit Button */}
@@ -313,7 +227,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, onSuccess, c
                               </button>
                               <button
                                    type="submit"
-                                   disabled={isSubmitting || formData.description.length < 20 || !selectedImage || !formData.latitude || !formData.longitude}
+                                   disabled={isSubmitting || formData.description.length < 20 || !selectedImage || !formData.latitude || !formData.longitude || !formData.type_disaster}
                                    className="flex-1 px-6 py-3 rounded-full bg-surface-primary text-background font-semibold hover:bg-surface-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl hover:scale-105 cursor-pointer"
                               >
                                    {isSubmitting ? (
@@ -328,19 +242,12 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, onSuccess, c
                          </div>
 
                          {/* Validation Helper Text */}
-                         {(!formData.latitude || !formData.longitude || formData.description.length < 20 || !selectedImage) && (
-                              <div className="text-xs text-surface-primary/60 text-center space-y-1">
-                                   {!formData.latitude || !formData.longitude ? (
-                                        <p>• Lokasi belum diisi</p>
-                                   ) : null}
-                                   {formData.description.length < 20 ? (
-                                        <p>• Deskripsi minimal 20 karakter (saat ini: {formData.description.length})</p>
-                                   ) : null}
-                                   {!selectedImage ? (
-                                        <p>• Foto belum diunggah</p>
-                                   ) : null}
-                              </div>
-                         )}
+                         <ValidationHelper
+                              hasLocation={!!(formData.latitude && formData.longitude)}
+                              hasDisasterType={!!formData.type_disaster}
+                              descriptionLength={formData.description.length}
+                              hasImage={!!selectedImage}
+                         />
                     </form>
                </div>
 

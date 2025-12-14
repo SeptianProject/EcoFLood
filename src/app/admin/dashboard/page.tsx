@@ -2,17 +2,15 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Shield, MapPin, Clock, CheckCircle2, XCircle, Loader2, LogOut, X } from "lucide-react"
+import { Shield, MapPin, Clock, CheckCircle2, XCircle, Loader2, LogOut, X, AlertTriangle } from "lucide-react"
+import { type Report as ReportType } from "@/interface"
+import StatsCard from "@/components/admin/StatsCard"
+import DisasterTypeStats from "@/components/admin/DisasterTypeStats"
+import FilterTabs from "@/components/admin/FilterTabs"
+import ReportCard from "@/components/admin/ReportCard"
+import DeleteConfirmModal from "@/components/admin/DeleteConfirmModal"
 
-interface Report {
-     id: number
-     latitude: number
-     longitude: number
-     description: string
-     imageUrl: string
-     status: string
-     createdAt: number
-}
+type Report = ReportType
 
 export default function AdminDashboardPage() {
      const router = useRouter()
@@ -21,6 +19,10 @@ export default function AdminDashboardPage() {
      const [error, setError] = useState<string | null>(null)
      const [processingId, setProcessingId] = useState<number | null>(null)
      const [selectedImage, setSelectedImage] = useState<string | null>(null)
+     const [deletingId, setDeletingId] = useState<number | null>(null)
+     const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null)
+     const [rejectingId, setRejectingId] = useState<number | null>(null)
+     const [filterStatus, setFilterStatus] = useState<string>("all")
 
      useEffect(() => {
           // Check if admin is logged in
@@ -83,123 +85,185 @@ export default function AdminDashboardPage() {
           }
      }
 
+     const handleReject = async (reportId: number) => {
+          setRejectingId(reportId)
+          setError(null)
+
+          try {
+               const token = localStorage.getItem("adminToken")
+               const formData = new FormData()
+               formData.append("secretTokenKey", token || "")
+
+               const response = await fetch(`/api/reject-report-disaster/${reportId}`, {
+                    method: "PATCH",
+                    body: formData,
+               })
+
+               if (!response.ok) {
+                    const errorData = await response.json()
+                    throw new Error(errorData.error || "Gagal menolak laporan")
+               }
+
+               // Refresh reports
+               await fetchReports()
+          } catch (err: unknown) {
+               const errorMessage = err instanceof Error ? err.message : "Terjadi kesalahan"
+               setError(errorMessage)
+          } finally {
+               setRejectingId(null)
+          }
+     }
+
+     const handleDelete = async (reportId: number) => {
+          setDeletingId(reportId)
+          setError(null)
+
+          try {
+               const token = localStorage.getItem("adminToken")
+               const formData = new FormData()
+               formData.append("secretTokenKey", token || "")
+
+               const response = await fetch(`/api/delete-report-disaster/${reportId}`, {
+                    method: "DELETE",
+                    body: formData,
+               })
+
+               if (!response.ok) {
+                    const errorData = await response.json()
+                    throw new Error(errorData.error || "Gagal menghapus laporan")
+               }
+
+               // Refresh reports
+               setDeleteConfirmId(null)
+               await fetchReports()
+          } catch (err: unknown) {
+               const errorMessage = err instanceof Error ? err.message : "Terjadi kesalahan"
+               setError(errorMessage)
+          } finally {
+               setDeletingId(null)
+          }
+     }
+
      const handleLogout = () => {
           localStorage.removeItem("adminToken")
           router.push("/admin/login")
      }
 
-     const formatDate = (timestamp: number) => {
-          const date = new Date(timestamp)
-          return date.toLocaleDateString("id-ID", {
-               year: "numeric",
-               month: "long",
-               day: "numeric",
-               hour: "2-digit",
-               minute: "2-digit"
-          })
-     }
+     const pendingReports = reports.filter(r => r.status === "pending")
+     const approvedReports = reports.filter(r => r.status === "success")
+     const rejectedReports = reports.filter(r => r.status === "rejected")
 
-     const getStatusBadge = (status: string) => {
-          switch (status) {
+     // Get filtered reports based on selected filter
+     const getFilteredReports = () => {
+          switch (filterStatus) {
                case "pending":
-                    return (
-                         <span className="inline-flex items-center gap-1 px-3 py-1 bg-accent/20 text-accent rounded-full text-sm font-semibold">
-                              <Clock className="w-4 h-4" />
-                              Menunggu
-                         </span>
-                    )
+                    return pendingReports
                case "success":
-                    return (
-                         <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/30 text-surface-primary rounded-full text-sm font-semibold">
-                              <CheckCircle2 className="w-4 h-4" />
-                              Disetujui
-                         </span>
-                    )
+                    return approvedReports
                case "rejected":
-                    return (
-                         <span className="inline-flex items-center gap-1 px-3 py-1 bg-accent/30 text-accent rounded-full text-sm font-semibold">
-                              <XCircle className="w-4 h-4" />
-                              Ditolak
-                         </span>
-                    )
+                    return rejectedReports
                default:
-                    return null
+                    return reports
           }
      }
 
-     const pendingReports = reports.filter(r => r.status === "pending")
-     const approvedReports = reports.filter(r => r.status === "success")
+     const filteredReports = getFilteredReports()
 
      return (
-          <div className="min-h-screen bg-background">
+          <div className="min-h-screen bg-linear-to-br from-gray-50 via-background to-primary/5">
                {/* Header */}
-               <div className="bg-surface-primary text-background shadow-lg">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+               <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-md border-b-2 border-surface-primary/10">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                          <div className="flex items-center justify-between">
                               <div className="flex items-center gap-4">
-                                   <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/30 backdrop-blur-sm rounded-xl">
-                                        <Shield className="w-6 h-6 text-primary" />
+                                   <div className="relative">
+                                        <div className="absolute inset-0 bg-linear-to-r from-primary to-surface-primary rounded-2xl blur-sm opacity-50"></div>
+                                        <div className="relative inline-flex items-center justify-center w-14 h-14 bg-linear-to-br from-surface-primary to-[#1f4d40] rounded-2xl shadow-lg">
+                                             <Shield className="w-7 h-7 text-primary" />
+                                        </div>
                                    </div>
                                    <div>
-                                        <h1 className="text-2xl font-bold">Dashboard Admin</h1>
-                                        <p className="text-background/80 text-sm">Kelola laporan warga EcoFlood</p>
+                                        <h1 className="text-2xl font-bold text-surface-primary">Dashboard Admin</h1>
+                                        <div className="flex items-center gap-2 mt-0.5">
+                                             <div className="flex items-center gap-1.5">
+                                                  <span className="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                                  <span className="text-xs font-medium text-surface-primary/60">Online</span>
+                                             </div>
+                                             <span className="text-surface-primary/40">•</span>
+                                             <span className="text-xs text-surface-primary/60">Sistem Monitoring EcoFlood</span>
+                                        </div>
                                    </div>
                               </div>
                               <button
                                    onClick={handleLogout}
-                                   className="flex items-center gap-2 px-4 py-2 bg-accent hover:bg-accent/90 text-background rounded-xl transition-all font-semibold hover:scale-105 cursor-pointer"
+                                   className="flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-accent to-[#ff9f85] hover:from-accent/90 hover:to-[#ff9f85]/90 text-white rounded-xl transition-all font-semibold hover:scale-105 cursor-pointer shadow-lg hover:shadow-xl"
                               >
-                                   <LogOut className="w-5 h-5" />
+                                   <LogOut className="w-4 h-4" />
                                    Keluar
                               </button>
                          </div>
                     </div>
-               </div>
+               </header>
 
                {/* Stats */}
                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                         <div className="bg-background rounded-2xl shadow-lg p-6 border-l-4 border-primary">
-                              <div className="flex items-center justify-between">
-                                   <div>
-                                        <p className="text-sm text-surface-primary/70 font-semibold">Total Laporan</p>
-                                        <p className="text-3xl font-bold text-surface-primary mt-1">{reports.length}</p>
-                                   </div>
-                                   <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
-                                        <MapPin className="w-6 h-6 text-surface-primary" />
-                                   </div>
-                              </div>
-                         </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                         <StatsCard
+                              title="Total Laporan"
+                              value={reports.length}
+                              icon={MapPin}
+                              bgColor="#b4e25115"
+                              textColor="#2a6354"
+                         />
+                         <StatsCard
+                              title="Menunggu"
+                              value={pendingReports.length}
+                              icon={Clock}
+                              bgColor="#ff8b7115"
+                              textColor="#ff8b71"
+                         />
+                         <StatsCard
+                              title="Disetujui"
+                              value={approvedReports.length}
+                              icon={CheckCircle2}
+                              bgColor="#10b98115"
+                              textColor="#10b981"
+                         />
+                         <StatsCard
+                              title="Ditolak"
+                              value={rejectedReports.length}
+                              icon={XCircle}
+                              bgColor="#ef444415"
+                              textColor="#ef4444"
+                         />
+                    </div>
 
-                         <div className="bg-background rounded-2xl shadow-lg p-6 border-l-4 border-accent">
-                              <div className="flex items-center justify-between">
-                                   <div>
-                                        <p className="text-sm text-surface-primary/70 font-semibold">Menunggu Persetujuan</p>
-                                        <p className="text-3xl font-bold text-surface-primary mt-1">{pendingReports.length}</p>
-                                   </div>
-                                   <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center">
-                                        <Clock className="w-6 h-6 text-accent" />
-                                   </div>
-                              </div>
-                         </div>
+                    {/* Disaster Type Statistics */}
+                    <div className="mt-8">
+                         <DisasterTypeStats reports={reports} />
+                    </div>
 
-                         <div className="bg-background rounded-2xl shadow-lg p-6 border-l-4 border-primary">
-                              <div className="flex items-center justify-between">
-                                   <div>
-                                        <p className="text-sm text-surface-primary/70 font-semibold">Disetujui</p>
-                                        <p className="text-3xl font-bold text-surface-primary mt-1">{approvedReports.length}</p>
-                                   </div>
-                                   <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
-                                        <CheckCircle2 className="w-6 h-6 text-surface-primary" />
-                                   </div>
-                              </div>
-                         </div>
+                    {/* Filter Tabs */}
+                    <div className="mt-8 mb-6">
+                         <FilterTabs
+                              filterStatus={filterStatus}
+                              onFilterChange={setFilterStatus}
+                              counts={{
+                                   all: reports.length,
+                                   pending: pendingReports.length,
+                                   approved: approvedReports.length,
+                                   rejected: rejectedReports.length
+                              }}
+                         />
                     </div>
 
                     {/* Error Message */}
                     {error && (
-                         <div className="mb-6 p-4 bg-accent/10 border-2 border-accent/50 rounded-xl text-accent">
-                              <p className="font-semibold">⚠️ {error}</p>
+                         <div className="mb-6 p-5 bg-accent/10 border-l-4 border-accent rounded-2xl text-accent shadow-lg backdrop-blur-sm">
+                              <div className="flex items-center gap-3">
+                                   <AlertTriangle className="w-6 h-6 shrink-0" />
+                                   <p className="font-semibold">{error}</p>
+                              </div>
                          </div>
                     )}
 
@@ -207,192 +271,83 @@ export default function AdminDashboardPage() {
                     {isLoading ? (
                          <div className="flex items-center justify-center py-20">
                               <div className="text-center">
-                                   <Loader2 className="w-12 h-12 animate-spin text-surface-primary mx-auto mb-4" />
-                                   <p className="text-surface-primary font-semibold">Memuat laporan...</p>
+                                   <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                        <Loader2 className="w-10 h-10 animate-spin text-surface-primary" />
+                                   </div>
+                                   <p className="text-surface-primary font-semibold text-lg">Memuat laporan...</p>
+                                   <p className="text-surface-primary/60 text-sm mt-1">Mohon tunggu sebentar</p>
                               </div>
                          </div>
                     ) : (
                          <>
-                              {/* Pending Reports */}
+                              {/* Reports List */}
                               <div className="mb-8">
-                                   <h2 className="text-xl font-bold text-surface-primary mb-4">
-                                        Laporan Menunggu Persetujuan ({pendingReports.length})
-                                   </h2>
-                                   {pendingReports.length === 0 ? (
-                                        <div className="bg-background rounded-2xl shadow-lg p-8 text-center border-2 border-surface-primary/10">
-                                             <Clock className="w-12 h-12 text-surface-primary/40 mx-auto mb-3" />
-                                             <p className="text-surface-primary/70">Tidak ada laporan yang menunggu persetujuan</p>
+                                   <div className="flex items-center justify-between mb-6">
+                                        <h2 className="text-2xl font-bold text-surface-primary flex items-center gap-3">
+                                             <div className="w-1 h-8 bg-primary rounded-full"></div>
+                                             {filterStatus === "all" && `Semua Laporan (${filteredReports.length})`}
+                                             {filterStatus === "pending" && `Menunggu Persetujuan (${filteredReports.length})`}
+                                             {filterStatus === "success" && `Laporan Disetujui (${filteredReports.length})`}
+                                             {filterStatus === "rejected" && `Laporan Ditolak (${filteredReports.length})`}
+                                        </h2>
+                                   </div>
+                                   {filteredReports.length === 0 ? (
+                                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-12 text-center border-2 border-surface-primary/10">
+                                             <div className="w-20 h-20 bg-surface-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                  <MapPin className="w-10 h-10 text-surface-primary/40" />
+                                             </div>
+                                             <p className="text-surface-primary/70 text-lg font-semibold">Tidak ada laporan</p>
+                                             <p className="text-surface-primary/50 text-sm mt-1">Belum ada laporan dalam kategori ini</p>
                                         </div>
                                    ) : (
-                                        <div className="grid grid-cols-1 gap-4">
-                                             {pendingReports.map((report) => (
-                                                  <div
+                                        <div className="grid grid-cols-1 gap-6">
+                                             {filteredReports.map((report) => (
+                                                  <ReportCard
                                                        key={report.id}
-                                                       className="bg-background rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow border-2 border-surface-primary/10"
-                                                  >
-                                                       <div className="flex flex-col md:flex-row gap-6">
-                                                            {/* Image */}
-                                                            <div className="shrink-0">
-                                                                 <div
-                                                                      className="w-full md:w-48 h-48 bg-gray-100 rounded-xl overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
-                                                                      onClick={() => setSelectedImage(report.imageUrl)}
-                                                                 >
-                                                                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                                      <img
-                                                                           src={report.imageUrl}
-                                                                           alt="Laporan"
-                                                                           className="w-full h-full object-cover"
-                                                                      />
-                                                                 </div>
-                                                            </div>
-
-                                                            {/* Content */}
-                                                            <div className="flex-1">
-                                                                 <div className="flex items-start justify-between mb-3">
-                                                                      <div>
-                                                                           <h3 className="text-lg font-bold text-gray-800 mb-1">
-                                                                                Laporan #{report.id}
-                                                                           </h3>
-                                                                           {getStatusBadge(report.status)}
-                                                                      </div>
-                                                                      <p className="text-sm text-gray-500">
-                                                                           {formatDate(report.createdAt)}
-                                                                      </p>
-                                                                 </div>
-
-                                                                 <div className="space-y-2 mb-4">
-                                                                      <div className="flex items-start gap-2">
-                                                                           <MapPin className="w-5 h-5 text-surface-primary/40 shrink-0 mt-0.5" />
-                                                                           <p className="text-sm text-surface-primary/80">
-                                                                                <span className="font-semibold">Koordinat:</span>{" "}
-                                                                                {report.latitude.toFixed(6)}, {report.longitude.toFixed(6)}
-                                                                           </p>
-                                                                      </div>
-                                                                      <div className="flex items-start gap-2">
-                                                                           <p className="text-sm text-gray-700 leading-relaxed">
-                                                                                {report.description}
-                                                                           </p>
-                                                                      </div>
-                                                                 </div>
-
-                                                                 {/* Actions */}
-                                                                 <div className="flex gap-3">
-                                                                      <button
-                                                                           onClick={() => handleApprove(report.id)}
-                                                                           disabled={processingId === report.id}
-                                                                           className="flex-1 px-4 py-2 bg-primary text-surface-primary font-semibold rounded-xl hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:scale-105"
-                                                                      >
-                                                                           {processingId === report.id ? (
-                                                                                <span className="flex items-center justify-center gap-2">
-                                                                                     <Loader2 className="w-4 h-4 animate-spin" />
-                                                                                     Memproses...
-                                                                                </span>
-                                                                           ) : (
-                                                                                <span className="flex items-center justify-center gap-2">
-                                                                                     <CheckCircle2 className="w-4 h-4" />
-                                                                                     Setujui Laporan
-                                                                                </span>
-                                                                           )}
-                                                                      </button>
-                                                                 </div>
-                                                            </div>
-                                                       </div>
-                                                  </div>
+                                                       report={report}
+                                                       processingId={processingId}
+                                                       deletingId={deletingId}
+                                                       rejectingId={rejectingId}
+                                                       onApprove={handleApprove}
+                                                       onReject={handleReject}
+                                                       onDelete={setDeleteConfirmId}
+                                                       onImageClick={setSelectedImage}
+                                                  />
                                              ))}
                                         </div>
                                    )}
                               </div>
 
-                              {/* Approved Reports */}
-                              <div>
-                                   <h2 className="text-xl font-bold text-surface-primary mb-4">
-                                        Laporan Disetujui ({approvedReports.length})
-                                   </h2>
-                                   {approvedReports.length === 0 ? (
-                                        <div className="bg-background rounded-2xl shadow-lg p-8 text-center border-2 border-surface-primary/10">
-                                             <CheckCircle2 className="w-12 h-12 text-surface-primary/40 mx-auto mb-3" />
-                                             <p className="text-surface-primary/70">Belum ada laporan yang disetujui</p>
-                                        </div>
-                                   ) : (
-                                        <div className="grid grid-cols-1 gap-4">
-                                             {approvedReports.map((report) => (
-                                                  <div
-                                                       key={report.id}
-                                                       className="bg-background rounded-2xl shadow-lg p-6 opacity-75 border-2 border-surface-primary/10"
-                                                  >
-                                                       <div className="flex flex-col md:flex-row gap-6">
-                                                            {/* Image */}
-                                                            <div className="shrink-0">
-                                                                 <div
-                                                                      className="w-full md:w-48 h-48 bg-gray-100 rounded-xl overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
-                                                                      onClick={() => setSelectedImage(report.imageUrl)}
-                                                                 >
-                                                                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                                      <img
-                                                                           src={report.imageUrl}
-                                                                           alt="Laporan"
-                                                                           className="w-full h-full object-cover"
-                                                                      />
-                                                                 </div>
-                                                            </div>
-
-                                                            {/* Content */}
-                                                            <div className="flex-1">
-                                                                 <div className="flex items-start justify-between mb-3">
-                                                                      <div>
-                                                                           <h3 className="text-lg font-bold text-gray-800 mb-1">
-                                                                                Laporan #{report.id}
-                                                                           </h3>
-                                                                           {getStatusBadge(report.status)}
-                                                                      </div>
-                                                                      <p className="text-sm text-gray-500">
-                                                                           {formatDate(report.createdAt)}
-                                                                      </p>
-                                                                 </div>
-
-                                                                 <div className="space-y-2">
-                                                                      <div className="flex items-start gap-2">
-                                                                           <MapPin className="w-5 h-5 text-gray-400 shrink-0 mt-0.5" />
-                                                                           <p className="text-sm text-gray-600">
-                                                                                <span className="font-semibold">Koordinat:</span>{" "}
-                                                                                {report.latitude.toFixed(6)}, {report.longitude.toFixed(6)}
-                                                                           </p>
-                                                                      </div>
-                                                                      <div className="flex items-start gap-2">
-                                                                           <p className="text-sm text-gray-700 leading-relaxed">
-                                                                                {report.description}
-                                                                           </p>
-                                                                      </div>
-                                                                 </div>
-                                                            </div>
-                                                       </div>
-                                                  </div>
-                                             ))}
-                                        </div>
-                                   )}
-                              </div>
                          </>
                     )}
                </div>
 
+               {/* Delete Confirmation Modal */}
+               <DeleteConfirmModal
+                    reportId={deleteConfirmId}
+                    isDeleting={deletingId === deleteConfirmId}
+                    onConfirm={() => deleteConfirmId && handleDelete(deleteConfirmId)}
+                    onCancel={() => setDeleteConfirmId(null)}
+               />
+
                {/* Image Modal */}
                {selectedImage && (
                     <div
-                         className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 cursor-pointer"
+                         className="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 z-50 cursor-pointer animate-fadeIn"
                          onClick={() => setSelectedImage(null)}
                     >
-                         <div className="relative max-w-4xl max-h-[90vh]">
+                         <div className="relative max-w-6xl max-h-[95vh] animate-scaleIn">
                               <button
                                    onClick={() => setSelectedImage(null)}
-                                   className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors cursor-pointer"
+                                   className="absolute -top-14 right-0 w-10 h-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all hover:scale-110"
                               >
-                                   <X className="w-8 h-8" />
+                                   <X className="w-6 h-6" />
                               </button>
                               {/* eslint-disable-next-line @next/next/no-img-element */}
                               <img
                                    src={selectedImage}
                                    alt="Laporan Fullsize"
-                                   className="max-w-full max-h-[90vh] rounded-2xl object-contain"
+                                   className="max-w-full max-h-[95vh] rounded-3xl object-contain shadow-2xl ring-4 ring-white/20"
                               />
                          </div>
                     </div>

@@ -3,6 +3,7 @@
 import React from 'react'
 import { ArrowLeft, Trees, Droplets, Flame, Leaf, Users } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import UserReportsLegend from './UserReportsLegend'
 
 interface MapSidebarProps {
      selectedIsland: string
@@ -211,8 +212,8 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
                               </div>
                          </div>
 
-                         {/* kawasan lindung */}
-                         <div className="">
+                         {/* Kawasan Lindung */}
+                         <div>
                               <p className="font-semibold mb-2 text-background flex items-center gap-1.5">
                                    <Leaf size={14} />
                                    <span>Kawasan Lindung</span>
@@ -220,18 +221,21 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
                               <div className='space-y-1 ml-4'>
                                    <div className="flex items-center gap-2">
                                         <div className="w-3 h-3 rounded-full" style={{ background: '#10b981' }}></div>
-                                        <span className="">UNESCO</span>
+                                        <span>UNESCO</span>
                                    </div>
                                    <div className="flex items-center gap-2">
                                         <div className="w-3 h-3 rounded-full" style={{ background: '#34d399' }}></div>
-                                        <span className="">Protected</span>
+                                        <span>Protected</span>
                                    </div>
                                    <div className="flex items-center gap-2">
                                         <div className="w-3 h-3 rounded-full" style={{ background: '#fbbf24' }}></div>
-                                        <span className="">Critical</span>
+                                        <span>Critical</span>
                                    </div>
                               </div>
                          </div>
+
+                         {/* User Reports Legend */}
+                         {layers.userReports && <UserReportsLegend />}
                     </div>
                </div>
 

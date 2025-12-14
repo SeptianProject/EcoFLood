@@ -2,8 +2,10 @@
 
 import React, { useEffect, useRef } from 'react'
 import L from 'leaflet'
-import { Flame, Leaf, MapPin, Ruler } from 'lucide-react'
+import { Flame, Leaf, MapPin, Ruler, CheckCircle2, Clock, XCircle } from 'lucide-react'
 import { renderToString } from 'react-dom/server'
+import { DISASTER_TYPES } from '@/interface'
+import DisasterIcon from '@/components/common/DisasterIcon'
 
 interface DeforestationData {
      lat: number
@@ -334,58 +336,138 @@ const MapLayers: React.FC<MapLayersProps> = ({
                map.addLayer(layerGroupsRef.current.biodiversity)
           }
 
-          // User Reports Layer (NEW)
+          // User Reports Layer (IMPROVED)
           if (layers.userReports && userReports.length > 0 && layerGroupsRef.current.userReports) {
                userReports.forEach(report => {
-                    // Icon and color based on report type
-                    const reportConfig: Record<string, { icon: string, color: string, label: string }> = {
-                         flood: { icon: '💧', color: '#3b82f6', label: 'Banjir' },
-                         deforestation: { icon: '🌳', color: '#ef4444', label: 'Deforestasi' },
-                         fire: { icon: '🔥', color: '#f97316', label: 'Kebakaran' },
-                         other: { icon: '⚠️', color: '#8b5cf6', label: 'Lainnya' }
+                    // Find disaster type from DISASTER_TYPES based on type_disaster field
+                    const disasterType = DISASTER_TYPES.find(t => t.value === report.type)
+                    const defaultType = DISASTER_TYPES.find(t => t.value === 'lainnya') || DISASTER_TYPES[DISASTER_TYPES.length - 1]
+                    const config = disasterType || defaultType
+
+                    // Status configuration
+                    const statusConfig = {
+                         pending: {
+                              color: '#ff8b71',
+                              label: 'Menunggu Verifikasi',
+                              icon: renderToString(<Clock size={14} className="text-white" />),
+                              borderColor: '#ff8b71'
+                         },
+                         success: {
+                              color: '#10b981',
+                              label: 'Disetujui',
+                              icon: renderToString(<CheckCircle2 size={14} className="text-white" />),
+                              borderColor: '#10b981'
+                         },
+                         rejected: {
+                              color: '#ef4444',
+                              label: 'Ditolak',
+                              icon: renderToString(<XCircle size={14} className="text-white" />),
+                              borderColor: '#ef4444'
+                         }
                     }
 
-                    const config = reportConfig[report.type] || reportConfig.other
+                    const status = statusConfig[report.status as keyof typeof statusConfig] || statusConfig.pending
 
+                    // Create marker with disaster type color
                     const marker = L.circleMarker([report.lat, report.lng], {
-                         radius: 8,
+                         radius: 10,
                          fillColor: config.color,
-                         color: '#fff',
-                         weight: 2,
+                         color: status.borderColor,
+                         weight: 3,
                          opacity: 1,
-                         fillOpacity: 0.7
+                         fillOpacity: 0.8
                     })
 
+                    // Get disaster icon
+                    const disasterIconSvg = renderToString(
+                         React.createElement(DisasterIcon, { iconName: config.iconName, size: 20 })
+                    )
+
+                    // Format date with relative time
+                    const formatDate = (dateString: string) => {
+                         const date = new Date(dateString)
+                         const now = new Date()
+                         const diffMs = now.getTime() - date.getTime()
+                         const diffHours = Math.floor(diffMs / 3600000)
+                         const diffDays = Math.floor(diffMs / 86400000)
+
+                         if (diffHours < 24) {
+                              return `${diffHours} jam yang lalu`
+                         } else if (diffDays < 7) {
+                              return `${diffDays} hari yang lalu`
+                         }
+                         return date.toLocaleDateString('id-ID', {
+                              weekday: 'long',
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
+                         })
+                    }
+
                     marker.bindPopup(`
-                         <div class="p-4 min-w-70 rounded-lg" style="background: #fcf6e4; border: 2px solid ${config.color};">
-                              <div class="flex items-center gap-2 mb-3">
-                                   <span style="font-size: 1.5rem;">${config.icon}</span>
-                                   <h3 class="font-bold text-lg" style="color: #2a6354;">Laporan Warga</h3>
+                         <div class="rounded-xl overflow-hidden shadow-2xl" style="min-width: 300px; max-width: 350px; border: 3px solid ${status.borderColor};">
+                              <!-- Header -->
+                              <div class="p-4 relative" style="background: linear-gradient(135deg, ${config.color} 0%, ${config.color}dd 100%);">
+                                   <div class="flex items-center gap-3 mb-2">
+                                        <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px);">
+                                             <div style="color: white;">${disasterIconSvg}</div>
+                                        </div>
+                                        <div class="flex-1">
+                                             <h3 class="font-bold text-lg text-white mb-1">Laporan Warga</h3>
+                                             <p class="text-xs text-white/90 font-semibold">#${report.id}</p>
+                                        </div>
+                                   </div>
+                                   <div class="flex gap-2 flex-wrap">
+                                        <div class="px-3 py-1.5 rounded-full text-xs font-bold inline-flex items-center gap-1.5" style="background: rgba(255,255,255,0.95); color: ${config.color}; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                                             ${config.label}
+                                        </div>
+                                        <div class="px-3 py-1.5 rounded-full text-xs font-bold inline-flex items-center gap-1.5" style="background: ${status.color}; color: white; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                                             <span>${status.icon}</span>
+                                             ${status.label}
+                                        </div>
+                                   </div>
                               </div>
-                              <div class="flex gap-2 mb-3 flex-wrap">
-                                   <div class="px-3 py-1.5 rounded-full text-xs font-bold" style="background: ${config.color}; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                                        ${config.label}
-                                   </div>
-                                   <div class="px-3 py-1.5 rounded-full text-xs font-bold capitalize" style="background: ${report.status === 'pending' ? '#ff8b71' : report.status === 'verified' ? '#b4e251' : '#ef4444'}; color: ${report.status === 'verified' ? '#2a6354' : 'white'}; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                                        ${report.status === 'pending' ? '⏳ Menunggu' : report.status === 'verified' ? '✓ Terverifikasi' : '✗ Ditolak'}
-                                   </div>
-                              </div>
-                              <div class="space-y-2" style="color: #2a6354;">
-                                   ${report.location ? `<div class="flex items-start gap-2">
-                                        <span class="font-bold text-sm">📍</span>
-                                        <p class="text-sm"><strong>Lokasi:</strong> ${report.location}</p>
-                                   </div>` : ''}
-                                   <div class="flex items-start gap-2">
-                                        <span class="font-bold text-sm">📅</span>
-                                        <p class="text-sm"><strong>Tanggal:</strong> ${new Date(report.date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                                   </div>
-                                   <div class="mt-3 p-3 rounded-lg" style="background: #2a6354; background: linear-gradient(135deg, rgba(42,99,84,0.05) 0%, rgba(42,99,84,0.1) 100%); border-left: 3px solid #2a6354;">
-                                        <p class="text-sm font-semibold mb-1" style="color: #2a6354;">Deskripsi:</p>
-                                        <p class="text-sm" style="color: #2a6354;">${report.description}</p>
+                              
+                              <!-- Content -->
+                              <div class="p-4 space-y-3" style="background: #fcf6e4;">
+                                   ${report.imageUrl ? `
+                                        <div class="rounded-lg overflow-hidden shadow-md">
+                                             <img src="${report.imageUrl}" alt="Foto laporan" class="w-full h-40 object-cover" />
+                                        </div>
+                                   ` : ''}
+                                   
+                                   <div class="space-y-2">
+                                        <div class="flex items-start gap-2">
+                                             <div class="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background: ${config.bgColor};">
+                                                  <span style="font-size: 0.7rem;">📍</span>
+                                             </div>
+                                             <div class="flex-1">
+                                                  <p class="text-xs font-semibold text-surface-primary/60">LOKASI</p>
+                                                  <p class="text-sm font-semibold text-surface-primary">${report.location || `${report.lat.toFixed(4)}, ${report.lng.toFixed(4)}`}</p>
+                                             </div>
+                                        </div>
+                                        
+                                        <div class="flex items-start gap-2">
+                                             <div class="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background: ${config.bgColor};">
+                                                  <span style="font-size: 0.7rem;">🕐</span>
+                                             </div>
+                                             <div class="flex-1">
+                                                  <p class="text-xs font-semibold text-surface-primary/60">WAKTU</p>
+                                                  <p class="text-sm font-semibold text-surface-primary">${formatDate(report.date)}</p>
+                                             </div>
+                                        </div>
+                                        
+                                        <div class="mt-3 p-3 rounded-lg" style="background: ${config.bgColor}; border-left: 3px solid ${config.color};">
+                                             <p class="text-xs font-bold mb-1" style="color: ${config.color};">DESKRIPSI:</p>
+                                             <p class="text-sm leading-relaxed" style="color: #2a6354;">${report.description}</p>
+                                        </div>
                                    </div>
                               </div>
                          </div>
-                    `)
+                    `, {
+                         maxWidth: 350,
+                         className: 'custom-popup'
+                    })
 
                     layerGroupsRef.current.userReports?.addLayer(marker)
                })

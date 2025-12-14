@@ -20,7 +20,7 @@ const InfoBanner: React.FC<InfoBannerProps> = ({
      return (
           <div className={`bg-linear-to-r from-primary/20 to-accent/20 rounded-3xl p-6 border-2 border-primary/30 shadow-lg ${className}`}>
                <div className='flex items-start gap-4'>
-                    <div className={`${iconBgColor} p-3 rounded-2xl flex-shrink-0`}>
+                    <div className={`${iconBgColor} p-3 rounded-2xl shrink-0`}>
                          {icon}
                     </div>
                     <div className='flex-1'>

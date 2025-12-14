@@ -119,23 +119,8 @@ export default function AdminLoginPage() {
                                         )}
                                    </button>
                               </form>
-
-                              {/* Back to Home */}
-                              <div className="mt-6 text-center">
-                                   <button
-                                        onClick={() => router.push("/")}
-                                        className="text-sm text-surface-primary hover:text-primary transition-colors font-semibold cursor-pointer"
-                                   >
-                                        ← Kembali ke Beranda
-                                   </button>
-                              </div>
                          </div>
                     </div>
-
-                    {/* Info Text */}
-                    <p className="text-center text-sm text-surface-primary/70 mt-6">
-                         🔒 Hanya untuk administrator EcoFlood
-                    </p>
                </div>
           </div>
      )
