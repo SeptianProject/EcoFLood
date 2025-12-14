@@ -52,6 +52,9 @@ const Page = () => {
      const [isModalOpen, setIsModalOpen] = useState(false)
      const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null)
 
+     // Mobile sidebar state
+     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
      // Island coordinates for centering map
      const islandCoordinates = {
           all: { center: [-0.7893, 113.9213] as [number, number], zoom: 5 },
@@ -88,6 +91,7 @@ const Page = () => {
                     mapRef.current.remove()
                     mapRef.current = null
                }
+               setIsSidebarOpen(false)
           }
      }, [isMounted])
 
@@ -158,8 +162,31 @@ const Page = () => {
      }
 
      return (
-          <div className='h-screen w-full flex bg-background overflow-hidden'>
-               {/* Sidebar */}
+          <div className='h-screen w-full bg-background overflow-hidden relative'>
+               {/* Mobile Toggle Button - Always visible on mobile */}
+               {!isSidebarOpen && (
+                    <button
+                         onClick={() => setIsSidebarOpen(true)}
+                         className="lg:hidden fixed top-20 left-4 bg-surface-primary text-white p-3 rounded-lg shadow-xl hover:bg-surface-primary/90 transition-all"
+                         style={{ zIndex: 1000 }}
+                         aria-label="Open sidebar"
+                    >
+                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                         </svg>
+                    </button>
+               )}
+
+               {/* Mobile Sidebar Backdrop */}
+               {isSidebarOpen && (
+                    <div
+                         className="fixed inset-0 bg-black/50 backdrop-blur-sm lg:hidden"
+                         style={{ zIndex: 998 }}
+                         onClick={() => setIsSidebarOpen(false)}
+                    />
+               )}
+
+               {/* Sidebar - Fixed on mobile, static on desktop */}
                <MapSidebar
                     selectedIsland={selectedIsland}
                     onIslandChange={setSelectedIsland}
@@ -167,10 +194,12 @@ const Page = () => {
                     onYearChange={setSelectedYear}
                     layers={layers}
                     onLayerToggle={handleLayerToggle}
+                    onClose={() => setIsSidebarOpen(false)}
+                    isOpen={isSidebarOpen}
                />
 
                {/* Map Container */}
-               <div className='flex-1 relative'>
+               <div className='absolute inset-0 lg:left-80'>
                     <div ref={mapContainerRef} className='w-full h-full' />
 
                     {/* Loading overlay */}

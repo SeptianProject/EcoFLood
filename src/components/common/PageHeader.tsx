@@ -25,9 +25,9 @@ const PageHeader: React.FC<PageHeaderProps> = ({
 
      return (
           <div className={`bg-surface-primary text-background shadow-lg ${className}`}>
-               <div className='max-w-7xl mx-auto px-8 py-6'>
-                    <div className='flex items-center justify-between'>
-                         <div className='flex items-center gap-4'>
+               <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6'>
+                    <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4'>
+                         <div className='flex items-center gap-3 sm:gap-4 w-full sm:w-auto'>
                               {showBackButton && (
                                    <>
                                         <button
@@ -35,23 +35,23 @@ const PageHeader: React.FC<PageHeaderProps> = ({
                                              className='flex items-center gap-2 hover:text-primary transition-colors duration-300 cursor-pointer'
                                              aria-label='Kembali'
                                         >
-                                             <ArrowLeft size={24} />
-                                             <span className='font-semibold'>Kembali</span>
+                                             <ArrowLeft size={20} className="sm:w-6 sm:h-6" />
+                                             <span className='font-semibold text-sm sm:text-base'>Kembali</span>
                                         </button>
-                                        <div className='h-8 w-px bg-background/30' />
+                                        <div className='h-6 sm:h-8 w-px bg-background/30' />
                                    </>
                               )}
                               <div>
-                                   <h1 className='text-3xl font-bold'>{title}</h1>
+                                   <h1 className='text-xl sm:text-2xl lg:text-3xl font-bold'>{title}</h1>
                                    {subtitle && (
-                                        <p className='text-background/80 text-sm mt-1'>
+                                        <p className='text-background/80 text-xs sm:text-sm mt-1'>
                                              {subtitle}
                                         </p>
                                    )}
                               </div>
                          </div>
                          {rightContent && (
-                              <div>
+                              <div className='w-full sm:w-auto'>
                                    {rightContent}
                               </div>
                          )}

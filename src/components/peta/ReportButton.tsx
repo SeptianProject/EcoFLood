@@ -11,21 +11,21 @@ const ReportButton: React.FC<ReportButtonProps> = ({ onClick }) => {
      return (
           <button
                onClick={onClick}
-               className="group fixed bottom-8 right-8 bg-primary hover:bg-primary/90 text-surface-primary rounded-full shadow-2xl hover:shadow-accent/50 transition-all duration-300 hover:scale-110 active:scale-95 flex items-center gap-3 px-6 py-4 font-bold cursor-pointer"
-               style={{ zIndex: 1000 }}
+               className="group fixed bottom-6 right-6 sm:bottom-8 sm:right-8 bg-primary hover:bg-primary/90 text-surface-primary rounded-full shadow-2xl hover:shadow-accent/50 transition-all duration-300 hover:scale-110 active:scale-95 flex items-center gap-2 sm:gap-3 px-4 py-3 sm:px-6 sm:py-4 font-bold cursor-pointer"
+               style={{ zIndex: 9999 }}
                title="Laporkan Kejadian"
           >
                {/* Icon Container */}
                <div className="relative">
                     <div className="absolute inset-0 bg-surface-primary/20 rounded-full animate-ping opacity-75 "></div>
-                    <MessageSquare className="p-1 w-8 h-8 relative z-10" />
+                    <MessageSquare className="p-1 w-6 h-6 sm:w-8 sm:h-8 relative z-10" />
                </div>
 
                {/* Text */}
-               <span className="text-lg">Laporkan</span>
+               <span className="text-sm sm:text-lg">Laporkan</span>
 
                {/* Plus Icon */}
-               <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
+               <Plus className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-90 transition-transform duration-300" />
 
                <style jsx>{`
                     @keyframes ping {

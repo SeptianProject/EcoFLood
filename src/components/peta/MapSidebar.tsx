@@ -18,6 +18,8 @@ interface MapSidebarProps {
           userReports: boolean
      }
      onLayerToggle: (layer: string) => void
+     onClose?: () => void
+     isOpen?: boolean
 }
 
 const MapSidebar: React.FC<MapSidebarProps> = ({
@@ -26,7 +28,9 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
      selectedYear,
      onYearChange,
      layers,
-     onLayerToggle
+     onLayerToggle,
+     onClose,
+     isOpen = false
 }) => {
      const router = useRouter()
 
@@ -42,17 +46,33 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
      const years = Array.from({ length: 15 }, (_, i) => 2010 + i)
 
      return (
-          <div className="w-80 h-full bg-surface-primary/95 backdrop-blur-sm shadow-xl p-6 flex flex-col overflow-y-auto">
-               {/* Header with Back Button */}
+          <aside className={`w-[85vw] sm:w-96 lg:w-80 h-screen bg-surface-primary/95 backdrop-blur-sm shadow-xl p-4 sm:p-6 flex flex-col overflow-y-auto fixed inset-y-0 left-0 transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+               }`}
+               style={{ zIndex: 999 }}
+          >
+               {/* Header with Back Button and Close Button */}
                <div className="mb-6">
-                    <button
-                         onClick={() => router.push('/')}
-                         className="flex items-center gap-2 text-background hover:text-primary transition-colors duration-300 mb-4 cursor-pointer"
-                    >
-                         <ArrowLeft size={20} />
-                         <span className="font-semibold">Kembali</span>
-                    </button>
-                    <h2 className="text-2xl font-bold text-background">Peta Interaktif</h2>
+                    <div className="flex items-center justify-between mb-4">
+                         <button
+                              onClick={() => router.push('/')}
+                              className="flex items-center gap-2 text-background hover:text-primary transition-colors duration-300 cursor-pointer"
+                         >
+                              <ArrowLeft size={20} />
+                              <span className="font-semibold">Kembali</span>
+                         </button>
+                         {onClose && (
+                              <button
+                                   onClick={onClose}
+                                   className="lg:hidden text-background hover:text-primary transition-colors p-2 cursor-pointer"
+                                   aria-label="Close sidebar"
+                              >
+                                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                   </svg>
+                              </button>
+                         )}
+                    </div>
+                    <h2 className="text-xl sm:text-2xl font-bold text-background">Peta Interaktif</h2>
                     <p className="text-background/80 text-sm mt-1">Analisis Data Lingkungan</p>
                </div>
 
@@ -260,7 +280,7 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
                          border: 2px solid var(--color-background);
                     }
                `}</style>
-          </div>
+          </aside>
      )
 }
 

@@ -36,10 +36,10 @@ const Page = () => {
                     rightContent={
                          <button
                               onClick={handleReset}
-                              className='flex items-center gap-2 bg-primary text-surface-primary px-6 py-3 rounded-full font-semibold hover:bg-primary/90 transition-all duration-300 hover:scale-105 cursor-pointer'
+                              className='flex items-center justify-center gap-2 bg-primary text-surface-primary px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-semibold hover:bg-primary/90 transition-all duration-300 hover:scale-105 cursor-pointer w-full sm:w-auto'
                          >
-                              <RefreshCw size={20} />
-                              Reset
+                              <RefreshCw size={18} className="sm:w-5 sm:h-5" />
+                              <span>Reset</span>
                          </button>
                     }
                />
@@ -62,10 +62,10 @@ const Page = () => {
                          className='mb-8'
                     />
 
-                    {/* Two Column Layout */}
-                    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                    {/* Two Column Layout - Responsive */}
+                    <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8'>
                          {/* Left Column - Controls */}
-                         <div className='space-y-8'>
+                         <div className='space-y-6 lg:space-y-8'>
                               <SimulationControls
                                    forestCover={forestCover}
                                    rainfall={rainfall}

@@ -46,7 +46,7 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
      }
 
      return (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
                {/* Risk Level Banner */}
                <div className={`${currentRisk.bg} text-white rounded-3xl p-6 shadow-xl`}>
                     <div className="flex items-center justify-between">

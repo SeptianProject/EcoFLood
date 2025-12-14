@@ -21,22 +21,23 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
      onSoilAbsorptionChange
 }) => {
      return (
-          <div className="bg-surface-primary/5 backdrop-blur-sm rounded-3xl p-8 shadow-lg border-2 border-surface-primary/20">
-               <h2 className="text-2xl font-bold text-surface-primary mb-6 flex items-center gap-2">
+          <div className="bg-surface-primary/5 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-lg border-2 border-surface-primary/20">
+               <h2 className="text-xl sm:text-2xl font-bold text-surface-primary mb-4 sm:mb-6 flex items-center gap-2">
                     <div className="bg-primary/20 p-2 rounded-xl">
-                         <TreePine className="w-5 h-5 text-surface-primary" />
+                         <TreePine className="w-4 h-4 sm:w-5 sm:h-5 text-surface-primary" />
                     </div>
-                    Parameter Simulasi
+                    <span className="text-lg sm:text-2xl">Parameter Simulasi</span>
                </h2>
 
                {/* Forest Cover Control */}
-               <div className="mb-8">
+               <div className="mb-6 sm:mb-8">
                     <div className="flex justify-between items-center mb-3">
-                         <label className="text-surface-primary font-semibold flex items-center gap-2">
-                              <TreePine className="w-5 h-5 text-green-600" />
-                              Persentase Tutupan Hutan
+                         <label className="text-sm sm:text-base text-surface-primary font-semibold flex items-center gap-2">
+                              <TreePine className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+                              <span className="hidden sm:inline">Persentase Tutupan Hutan</span>
+                              <span className="sm:hidden">Tutupan Hutan</span>
                          </label>
-                         <span className="text-2xl font-bold text-primary">{forestCover}%</span>
+                         <span className="text-xl sm:text-2xl font-bold text-primary">{forestCover}%</span>
                     </div>
                     <input
                          type="range"
@@ -46,10 +47,10 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
                          onChange={(e) => onForestCoverChange(Number(e.target.value))}
                          className="w-full h-3 bg-surface-primary/20 rounded-full appearance-none cursor-pointer slider-forest"
                     />
-                    <div className="flex justify-between text-surface-primary/60 text-sm mt-2">
+                    <div className="flex justify-between text-surface-primary/60 text-xs sm:text-sm mt-2">
                          <span>0%</span>
-                         <span className="text-xs">Lahan Gundul</span>
-                         <span className="text-xs">Hutan Primer</span>
+                         <span className="text-[10px] sm:text-xs hidden sm:inline">Lahan Gundul</span>
+                         <span className="text-[10px] sm:text-xs hidden sm:inline">Hutan Primer</span>
                          <span>100%</span>
                     </div>
                     <div className="text-xs text-surface-primary/60 mt-2 italic">
@@ -58,13 +59,14 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
                </div>
 
                {/* Rainfall Control */}
-               <div className="mb-8">
+               <div className="mb-6 sm:mb-8">
                     <div className="flex justify-between items-center mb-3">
-                         <label className="text-surface-primary font-semibold flex items-center gap-2">
-                              <CloudRain className="w-5 h-5 text-blue-600" />
-                              Curah Hujan Harian
+                         <label className="text-sm sm:text-base text-surface-primary font-semibold flex items-center gap-2">
+                              <CloudRain className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                              <span className="hidden sm:inline">Curah Hujan Harian</span>
+                              <span className="sm:hidden">Curah Hujan</span>
                          </label>
-                         <span className="text-2xl font-bold text-accent">{rainfall} mm/hari</span>
+                         <span className="text-lg sm:text-2xl font-bold text-accent">{rainfall} mm</span>
                     </div>
                     <input
                          type="range"
@@ -74,11 +76,11 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
                          onChange={(e) => onRainfallChange(Number(e.target.value))}
                          className="w-full h-3 bg-surface-primary/20 rounded-full appearance-none cursor-pointer slider-rainfall"
                     />
-                    <div className="flex justify-between text-surface-primary/60 text-sm mt-2">
-                         <span>0 mm</span>
-                         <span className="text-xs">Ringan (&lt;50)</span>
-                         <span className="text-xs">Ekstrem (&gt;150)</span>
-                         <span>300 mm</span>
+                    <div className="flex justify-between text-surface-primary/60 text-xs sm:text-sm mt-2">
+                         <span>0</span>
+                         <span className="text-[10px] sm:text-xs hidden sm:inline">Ringan (&lt;50)</span>
+                         <span className="text-[10px] sm:text-xs hidden sm:inline">Ekstrem (&gt;150)</span>
+                         <span>300</span>
                     </div>
                     <div className="text-xs text-surface-primary/60 mt-2 italic">
                          Curah hujan &gt;150mm/hari dapat menyebabkan banjir di area rawan
@@ -87,11 +89,12 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
 
                {/* Soil Absorption Control */}
                <div>
-                    <label className="text-surface-primary font-semibold mb-3 flex items-center gap-2">
-                         <Sprout className="w-5 h-5 text-emerald-600" />
-                         Kapasitas Resapan Tanah
+                    <label className="text-sm sm:text-base text-surface-primary font-semibold mb-3 flex items-center gap-2">
+                         <Sprout className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
+                         <span className="hidden sm:inline">Kapasitas Resapan Tanah</span>
+                         <span className="sm:hidden">Resapan Tanah</span>
                     </label>
-                    <div className="grid grid-cols-3 gap-3 mb-2">
+                    <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-2">
                          <SoilButton
                               label="Rendah"
                               value="low"
@@ -114,7 +117,7 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
                               color="bg-green-500"
                          />
                     </div>
-                    <div className="text-xs text-surface-primary/60 mt-2 italic">
+                    <div className="text-[10px] sm:text-xs text-surface-primary/60 mt-2 italic">
                          Rendah: lahan beton/gundul | Sedang: tanah biasa | Tinggi: tanah berpori + vegetasi
                     </div>
                </div>
@@ -180,7 +183,7 @@ const SoilButton: React.FC<SoilButtonProps> = ({ label, selected, onClick, color
      return (
           <button
                onClick={onClick}
-               className={`py-3 px-4 rounded-xl font-semibold transition-all duration-300 cursor-pointer ${selected
+               className={`py-2 sm:py-3 px-2 sm:px-4 rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold transition-all duration-300 cursor-pointer ${selected
                     ? `${color} text-white scale-105 shadow-lg`
                     : 'bg-surface-primary/10 text-surface-primary hover:bg-surface-primary/20'
                     }`}
