@@ -7,7 +7,7 @@ import 'leaflet/dist/leaflet.css'
 import MapSidebar from '@/components/peta/MapSidebar'
 import MapLayers from '@/components/peta/MapLayers'
 import ReportButton from '@/components/peta/ReportButton'
-import ReportModal, { ReportFormData } from '@/components/peta/ReportModal'
+import ReportModal from '@/components/peta/ReportModal'
 import {
      fetchTreeCoverLoss,
      fetchFloodHistory,
@@ -65,72 +65,14 @@ interface UserReport {
      id: string
      lat: number
      lng: number
-     location: string
+     location?: string
      island: string
-     type: 'flood' | 'deforestation' | 'fire' | 'other'
+     type?: 'flood' | 'deforestation' | 'fire' | 'other'
      description: string
      date: string
-     status: 'pending' | 'verified' | 'rejected'
+     status: 'pending' | 'success' | 'rejected'
+     imageUrl?: string
 }
-
-// Dummy user reports data (will be replaced with API calls)
-const dummyUserReports: UserReport[] = [
-     {
-          id: 'ur1',
-          lat: -6.2088,
-          lng: 106.8456,
-          location: 'Jakarta Utara',
-          island: 'java',
-          type: 'flood',
-          description: 'Banjir setinggi 1 meter menggenangi pemukiman warga',
-          date: '2024-12-10',
-          status: 'verified'
-     },
-     {
-          id: 'ur2',
-          lat: -0.9517,
-          lng: 116.0921,
-          location: 'Kutai Kartanegara, Kalimantan',
-          island: 'kalimantan',
-          type: 'deforestation',
-          description: 'Pembukaan lahan hutan untuk perkebunan sawit',
-          date: '2024-11-25',
-          status: 'pending'
-     },
-     {
-          id: 'ur3',
-          lat: 0.5071,
-          lng: 101.4478,
-          location: 'Riau',
-          island: 'sumatra',
-          type: 'fire',
-          description: 'Kebakaran lahan gambut di area perkebunan',
-          date: '2024-12-05',
-          status: 'verified'
-     },
-     {
-          id: 'ur4',
-          lat: -7.2575,
-          lng: 112.7521,
-          location: 'Surabaya',
-          island: 'java',
-          type: 'flood',
-          description: 'Banjir rob merendam jalan utama pesisir',
-          date: '2024-12-12',
-          status: 'pending'
-     },
-     {
-          id: 'ur5',
-          lat: -3.3194,
-          lng: 114.5901,
-          location: 'Banjarmasin',
-          island: 'kalimantan',
-          type: 'flood',
-          description: 'Luapan sungai Martapura menggenangi beberapa desa',
-          date: '2024-11-30',
-          status: 'verified'
-     }
-]
 
 // Fix Leaflet default marker icon issue
 if (typeof window !== 'undefined') {
@@ -164,7 +106,7 @@ const Page = () => {
      const [floodData, setFloodData] = useState<FloodData[]>([])
      const [fireData, setFireData] = useState<FireData[]>([])
      const [biodiversityData, setBiodiversityData] = useState<BiodiversityData[]>([])
-     const [userReports, setUserReports] = useState<UserReport[]>(dummyUserReports)
+     const [userReports, setUserReports] = useState<UserReport[]>([])
      const [isLoading, setIsLoading] = useState(true)
 
      // Modal state
@@ -213,17 +155,33 @@ const Page = () => {
           const loadData = async () => {
                setIsLoading(true)
                try {
-                    const [deforest, flood, fire, bio] = await Promise.all([
+                    const [deforest, flood, fire, bio, reports] = await Promise.all([
                          fetchTreeCoverLoss(selectedYear),
                          fetchFloodHistory(selectedIsland, selectedYear),
                          fetchFireHotspots(selectedIsland, selectedYear),
-                         fetchBiodiversityData(selectedIsland)
+                         fetchBiodiversityData(selectedIsland),
+                         fetch('/api/report-disaster').then(res => res.json())
                     ])
 
                     setDeforestationData(deforest.data || [])
                     setFloodData((flood || []) as FloodData[])
                     setFireData((fire || []) as FireData[])
                     setBiodiversityData((bio || []) as BiodiversityData[])
+
+                    // Only show approved reports
+                    const approvedReports = (reports || [])
+                         .filter((r: { status: string }) => r.status === 'success')
+                         .map((r: { id: number; latitude: number; longitude: number; description: string; createdAt: number; imageUrl: string }) => ({
+                              id: r.id,
+                              lat: r.latitude,
+                              lng: r.longitude,
+                              description: r.description,
+                              date: new Date(r.createdAt).toISOString().split('T')[0],
+                              status: 'success' as const,
+                              island: getIslandFromCoords(r.latitude, r.longitude),
+                              imageUrl: r.imageUrl
+                         }))
+                    setUserReports(approvedReports)
                } catch (error) {
                     console.error('Error loading data:', error)
                } finally {
@@ -264,40 +222,20 @@ const Page = () => {
           return 'other'
      }
 
-     // Handle report submission
-     const handleReportSubmit = (reportData: ReportFormData) => {
-          const reportLat = mapCenter?.lat || reportData.lat
-          const reportLng = mapCenter?.lng || reportData.lng
-
-          const newReport: UserReport = {
-               id: `ur${Date.now()}`,
-               lat: reportLat,
-               lng: reportLng,
-               location: reportData.location,
-               island: getIslandFromCoords(reportLat, reportLng),
-               type: reportData.type,
-               description: reportData.description,
-               date: new Date().toISOString().split('T')[0],
-               status: 'pending'
-          }
-
-          setUserReports([...userReports, newReport])
-
+     // Handle report success
+     const handleReportSuccess = () => {
           // Show success notification
           if (typeof window !== 'undefined') {
                const notification = document.createElement('div')
-               notification.className = 'fixed top-20 right-8 bg-primary text-surface-primary px-6 py-4 rounded-2xl shadow-2xl font-bold animate-slideIn'
+               notification.className = 'fixed top-20 right-8 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4 rounded-2xl shadow-2xl font-bold animate-slideIn'
                notification.style.zIndex = '2001'
-               notification.innerHTML = '✓ Laporan berhasil dikirim!'
+               notification.innerHTML = '✓ Laporan berhasil dikirim! Menunggu persetujuan admin.'
                document.body.appendChild(notification)
 
                setTimeout(() => {
                     notification.remove()
-               }, 3000)
+               }, 4000)
           }
-
-          // TODO: Send to API
-          // await submitReport(reportData)
      }
 
      // Update map center when map moves
@@ -386,7 +324,7 @@ const Page = () => {
                     <ReportModal
                          isOpen={isModalOpen}
                          onClose={() => setIsModalOpen(false)}
-                         onSubmit={handleReportSubmit}
+                         onSuccess={handleReportSuccess}
                          currentPosition={mapCenter}
                     />
                </div>

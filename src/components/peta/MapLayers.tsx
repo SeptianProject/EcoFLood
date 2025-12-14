@@ -55,12 +55,13 @@ interface UserReport {
      id: string
      lat: number
      lng: number
-     location: string
+     location?: string
      island: string
-     type: 'flood' | 'deforestation' | 'fire' | 'other'
+     type?: 'flood' | 'deforestation' | 'fire' | 'other'
      description: string
      date: string
-     status: 'pending' | 'verified' | 'rejected'
+     status: 'pending' | 'success' | 'rejected'
+     imageUrl?: string
 }
 
 interface MapLayersProps {
@@ -370,10 +371,10 @@ const MapLayers: React.FC<MapLayersProps> = ({
                                    </div>
                               </div>
                               <div class="space-y-2" style="color: #2a6354;">
-                                   <div class="flex items-start gap-2">
+                                   ${report.location ? `<div class="flex items-start gap-2">
                                         <span class="font-bold text-sm">📍</span>
                                         <p class="text-sm"><strong>Lokasi:</strong> ${report.location}</p>
-                                   </div>
+                                   </div>` : ''}
                                    <div class="flex items-start gap-2">
                                         <span class="font-bold text-sm">📅</span>
                                         <p class="text-sm"><strong>Tanggal:</strong> ${new Date(report.date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>

@@ -46,7 +46,7 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
                <div className="mb-6">
                     <button
                          onClick={() => router.push('/')}
-                         className="flex items-center gap-2 text-background hover:text-primary transition-colors duration-300 mb-4"
+                         className="flex items-center gap-2 text-background hover:text-primary transition-colors duration-300 mb-4 cursor-pointer"
                     >
                          <ArrowLeft size={20} />
                          <span className="font-semibold">Kembali</span>

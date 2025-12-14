@@ -11,14 +11,14 @@ const ReportButton: React.FC<ReportButtonProps> = ({ onClick }) => {
      return (
           <button
                onClick={onClick}
-               className="group fixed bottom-8 right-8 bg-primary hover:bg-primary/90 text-surface-primary rounded-full shadow-2xl hover:shadow-accent/50 transition-all duration-300 hover:scale-110 active:scale-95 flex items-center gap-3 px-6 py-4 font-bold"
+               className="group fixed bottom-8 right-8 bg-primary hover:bg-primary/90 text-surface-primary rounded-full shadow-2xl hover:shadow-accent/50 transition-all duration-300 hover:scale-110 active:scale-95 flex items-center gap-3 px-6 py-4 font-bold cursor-pointer"
                style={{ zIndex: 1000 }}
                title="Laporkan Kejadian"
           >
                {/* Icon Container */}
                <div className="relative">
-                    <div className="absolute inset-0 bg-surface-primary/20 rounded-full animate-ping opacity-75"></div>
-                    <MessageSquare className="w-6 h-6 relative z-10" />
+                    <div className="absolute inset-0 bg-surface-primary/20 rounded-full animate-ping opacity-75 "></div>
+                    <MessageSquare className="p-1 w-8 h-8 relative z-10" />
                </div>
 
                {/* Text */}

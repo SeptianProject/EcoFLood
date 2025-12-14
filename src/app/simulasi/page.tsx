@@ -190,7 +190,7 @@ const ScenarioButton: React.FC<ScenarioButtonProps> = ({ label, description, onC
      return (
           <button
                onClick={onClick}
-               className='w-full bg-background hover:bg-surface-primary hover:text-background text-surface-primary rounded-2xl p-4 transition-all duration-300 text-left group border-2 border-surface-primary/20 hover:border-primary hover:scale-102 shadow-sm hover:shadow-md'
+               className='cursor-pointer w-full bg-background hover:bg-surface-primary hover:text-background text-surface-primary rounded-2xl p-4 transition-all duration-300 text-left group border-2 border-surface-primary/20 hover:border-primary hover:scale-102 shadow-sm hover:shadow-md'
           >
                <div className='flex items-center gap-3'>
                     <div className={`${color} transition-transform group-hover:scale-110 duration-300`}>

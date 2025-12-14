@@ -2,11 +2,20 @@
 
 import Image from "next/image";
 import Navigate, { NavigateType } from "../ui/Navigate";
-import React from 'react'
-import { usePathname } from 'next/navigation'
+import React, { useState, useEffect } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { Shield } from 'lucide-react'
 
 const Header = () => {
      const pathname = usePathname()
+     const router = useRouter()
+     const [isAdmin, setIsAdmin] = useState(false)
+
+     useEffect(() => {
+          // Check if user is admin
+          const token = localStorage.getItem("adminToken")
+          setIsAdmin(!!token)
+     }, [pathname])
 
      const navigate: NavigateType[] = [
           {
@@ -21,11 +30,15 @@ const Header = () => {
                href: "/simulasi",
                name: "Simulasi"
           },
-          {
-               href: "/laporan",
-               name: "Laporan"
-          },
      ]
+
+     const handleAdminClick = () => {
+          if (isAdmin) {
+               router.push('/admin/dashboard')
+          } else {
+               router.push('/admin/login')
+          }
+     }
 
      return (
           <header className="py-12">
@@ -44,6 +57,16 @@ const Header = () => {
                                         isActive={pathname === item.href}
                                    />
                               ))}
+                              <button
+                                   onClick={handleAdminClick}
+                                   className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all hover:scale-105 cursor-pointer ${pathname.startsWith('/admin')
+                                        ? 'bg-surface-primary text-background'
+                                        : 'bg-surface-primary/10 text-surface-primary hover:bg-surface-primary/20'
+                                        }`}
+                              >
+                                   <Shield className="w-4 h-4" />
+                                   {isAdmin ? 'Dashboard' : 'Admin'}
+                              </button>
                          </nav>
                     </div>
                </div>

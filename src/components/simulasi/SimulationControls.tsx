@@ -171,7 +171,7 @@ const SoilButton: React.FC<SoilButtonProps> = ({ label, selected, onClick, color
      return (
           <button
                onClick={onClick}
-               className={`py-3 px-4 rounded-xl font-semibold transition-all duration-300 ${selected
+               className={`py-3 px-4 rounded-xl font-semibold transition-all duration-300 cursor-pointer ${selected
                     ? `${color} text-white scale-105 shadow-lg`
                     : 'bg-surface-primary/10 text-surface-primary hover:bg-surface-primary/20'
                     }`}

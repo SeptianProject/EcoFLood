@@ -13,7 +13,7 @@ const Navigate: React.FC<NavigateType> = ({
 }) => {
 
      return (
-          <Link href={href} className={`font-medium text-base 
+          <Link href={href} className={`cursor-pointer font-medium text-base 
           rounded-full px-6 py-2
           hover:translate-y-0.5 transition duration-300
           ${isActive ? 'bg-primary' : 'bg-background hover:bg-primary '}`}>
