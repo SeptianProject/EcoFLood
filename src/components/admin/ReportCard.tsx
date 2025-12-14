@@ -75,7 +75,7 @@ const ReportCard: React.FC<ReportCardProps> = ({
      const getStatusBadge = (status: string) => {
           const statusConfig = {
                pending: { label: "Menunggu", color: "#f59e0b", bg: "#fef3c7" },
-               approved: { label: "Disetujui", color: "#10b981", bg: "#d1fae5" },
+               success: { label: "Disetujui", color: "#10b981", bg: "#d1fae5" },
                rejected: { label: "Ditolak", color: "#ef4444", bg: "#fee2e2" },
           }[status] || { label: status, color: "#6b7280", bg: "#f3f4f6" }
 
