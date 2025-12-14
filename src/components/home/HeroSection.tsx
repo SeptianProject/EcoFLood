@@ -100,8 +100,8 @@ export default function HeroSection() {
                               </div>
                          </div>
 
-                         {/* Right Content - Hero Image */}
-                         <div className='relative order-1 lg:order-2'>
+                         {/* Right Content - Hero Image (Hidden on Mobile) */}
+                         <div className='relative order-1 lg:order-2 hidden lg:block'>
                               <div className='relative w-full h-112.5 sm:h-137.5 lg:h-162.5 xl:h-175 rounded-3xl overflow-hidden shadow-2xl'>
                                    <Image
                                         src="/hero-image.png"

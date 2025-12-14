@@ -26,7 +26,7 @@ export default function PageLoader() {
      if (!isLoading) return null
 
      return (
-          <div className="fixed inset-0 z-[10000] bg-background flex items-center justify-center">
+          <div className="fixed inset-0 z-10000 bg-background flex items-center justify-center">
                <div className="text-center">
                     {/* Logo Animation */}
                     <div className="mb-8 animate-bounce">
@@ -45,7 +45,7 @@ export default function PageLoader() {
                     {/* Loading Bar */}
                     <div className="w-64 h-2 bg-gray-200 rounded-full overflow-hidden mx-auto">
                          <div
-                              className="h-full bg-gradient-to-r from-surface-primary to-primary transition-all duration-300 ease-out"
+                              className="h-full bg-linear-to-r from-surface-primary to-primary transition-all duration-300 ease-out"
                               style={{ width: `${progress}%` }}
                          />
                     </div>

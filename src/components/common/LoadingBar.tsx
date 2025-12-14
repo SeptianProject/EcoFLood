@@ -37,7 +37,7 @@ function LoadingBarContent() {
 
      return (
           <div
-               className="fixed top-0 left-0 right-0 z-[9999] h-1 bg-primary/20"
+               className="fixed top-0 left-0 right-0 z-9999 h-1 bg-primary/20"
                role="progressbar"
                aria-valuemin={0}
                aria-valuemax={100}
@@ -50,7 +50,7 @@ function LoadingBarContent() {
                          transition: 'width 300ms ease-out'
                     }}
                >
-                    <div className="absolute right-0 top-0 h-full w-20 bg-gradient-to-l from-primary to-transparent opacity-50 animate-pulse" />
+                    <div className="absolute right-0 top-0 h-full w-20 bg-linear-to-l from-primary to-transparent opacity-50 animate-pulse" />
                </div>
           </div>
      )
