@@ -230,10 +230,20 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, onSuccess, c
                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                    placeholder="Jelaskan kondisi yang Anda temukan (contoh: kerusakan hutan, aliran air tersumbat, erosi kecil, dll)"
                                    rows={4}
-                                   className="w-full px-4 py-3 bg-background rounded-xl border-2 border-surface-primary/20 focus:border-primary focus:outline-none transition-colors text-surface-primary resize-none"
+                                   className={`w-full px-4 py-3 bg-background rounded-xl border-2 focus:outline-none transition-colors text-surface-primary resize-none ${formData.description.length > 0 && formData.description.length < 20
+                                             ? 'border-accent/50 focus:border-accent'
+                                             : formData.description.length >= 20
+                                                  ? 'border-green-500/50 focus:border-green-500'
+                                                  : 'border-surface-primary/20 focus:border-primary'
+                                        }`}
                               />
-                              <p className="text-xs text-surface-primary/60 mt-1">
-                                   Minimal 20 karakter ({formData.description.length}/20)
+                              <p className={`text-xs mt-1 ${formData.description.length >= 20
+                                        ? 'text-green-600'
+                                        : formData.description.length > 0
+                                             ? 'text-accent'
+                                             : 'text-surface-primary/60'
+                                   }`}>
+                                   {formData.description.length >= 20 ? '✓' : '○'} Minimal 20 karakter ({formData.description.length}/20)
                               </p>
                          </div>
 
@@ -242,7 +252,8 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, onSuccess, c
                               <label className="block text-surface-primary font-semibold mb-2">
                                    Foto Kondisi Lingkungan <span className="text-accent">*</span>
                               </label>
-                              <div className="border-2 border-dashed border-surface-primary/30 rounded-xl p-6 text-center hover:border-primary transition-colors cursor-pointer">
+                              <div className={`border-2 border-dashed rounded-xl p-6 text-center hover:border-primary transition-colors cursor-pointer ${selectedImage ? 'border-green-500/50' : 'border-surface-primary/30'
+                                   }`}>
                                    <input
                                         type="file"
                                         accept="image/*"
@@ -260,7 +271,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, onSuccess, c
                                                        alt="Preview"
                                                        className="max-h-48 mx-auto rounded-lg object-cover"
                                                   />
-                                                  <p className="text-sm text-surface-primary font-semibold">
+                                                  <p className="text-sm text-green-600 font-semibold">
                                                        ✓ {selectedImage?.name}
                                                   </p>
                                                   <p className="text-xs text-surface-primary/60">
@@ -302,7 +313,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, onSuccess, c
                               </button>
                               <button
                                    type="submit"
-                                   disabled={isSubmitting || formData.description.length < 20}
+                                   disabled={isSubmitting || formData.description.length < 20 || !selectedImage || !formData.latitude || !formData.longitude}
                                    className="flex-1 px-6 py-3 rounded-full bg-surface-primary text-background font-semibold hover:bg-surface-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl hover:scale-105 cursor-pointer"
                               >
                                    {isSubmitting ? (
@@ -315,6 +326,21 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, onSuccess, c
                                    )}
                               </button>
                          </div>
+
+                         {/* Validation Helper Text */}
+                         {(!formData.latitude || !formData.longitude || formData.description.length < 20 || !selectedImage) && (
+                              <div className="text-xs text-surface-primary/60 text-center space-y-1">
+                                   {!formData.latitude || !formData.longitude ? (
+                                        <p>• Lokasi belum diisi</p>
+                                   ) : null}
+                                   {formData.description.length < 20 ? (
+                                        <p>• Deskripsi minimal 20 karakter (saat ini: {formData.description.length})</p>
+                                   ) : null}
+                                   {!selectedImage ? (
+                                        <p>• Foto belum diunggah</p>
+                                   ) : null}
+                              </div>
+                         )}
                     </form>
                </div>
 
