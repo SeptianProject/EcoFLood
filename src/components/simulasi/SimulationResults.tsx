@@ -1,6 +1,7 @@
 "use client"
 
 import React from 'react'
+import { Droplets, Waves, Leaf, CheckCircle2, AlertTriangle, AlertOctagon, XCircle, Lightbulb } from 'lucide-react'
 
 interface SimulationResultsProps {
      floodProbability: number
@@ -32,20 +33,27 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
 
      const currentRisk = riskColors[riskLevel]
 
+     const riskIcons = {
+          low: <CheckCircle2 className="w-16 h-16" />,
+          medium: <AlertTriangle className="w-16 h-16" />,
+          high: <AlertOctagon className="w-16 h-16" />,
+          critical: <XCircle className="w-16 h-16" />
+     }
+
      return (
           <div className="space-y-6">
                {/* Risk Level Banner */}
                <div className={`${currentRisk.bg} text-white rounded-3xl p-6 shadow-xl`}>
                     <div className="flex items-center justify-between">
-                         <div>
-                              <h3 className="text-lg font-semibold mb-1">Tingkat Risiko</h3>
-                              <p className="text-3xl font-bold">{currentRisk.label.toUpperCase()}</p>
+                         <div className="flex-1">
+                              <h3 className="text-lg font-semibold mb-1">Tingkat Risiko Banjir</h3>
+                              <p className="text-4xl font-bold mb-2">{currentRisk.label.toUpperCase()}</p>
+                              <div className="text-sm opacity-90">
+                                   Probabilitas: {floodProbability}%
+                              </div>
                          </div>
-                         <div className="text-6xl">
-                              {riskLevel === 'low' && '✅'}
-                              {riskLevel === 'medium' && '⚠️'}
-                              {riskLevel === 'high' && '🚨'}
-                              {riskLevel === 'critical' && '🆘'}
+                         <div className="animate-pulse">
+                              {riskIcons[riskLevel]}
                          </div>
                     </div>
                </div>
@@ -55,19 +63,19 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
                     <MetricCard
                          title="Probabilitas Banjir"
                          value={floodProbability}
-                         icon="💧"
+                         icon={<Droplets className="w-8 h-8" />}
                          color="blue"
                     />
                     <MetricCard
                          title="Aliran Air"
                          value={waterRunoff}
-                         icon="🌊"
+                         icon={<Waves className="w-8 h-8" />}
                          color="cyan"
                     />
                     <MetricCard
                          title="Kesehatan Lingkungan"
                          value={environmentalHealth}
-                         icon="🌿"
+                         icon={<Leaf className="w-8 h-8" />}
                          color="green"
                     />
                </div>
@@ -95,13 +103,16 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
                </div>
 
                {/* Recommendations */}
-               <div className="bg-linear-to-br from-primary/20 to-accent/20 rounded-3xl p-6 border-2 border-primary/30">
-                    <h3 className="text-xl font-bold text-surface-primary mb-4">💡 Rekomendasi</h3>
+               <div className="bg-linear-to-br from-primary/20 to-accent/20 rounded-3xl p-6 border-2 border-primary/30 shadow-md">
+                    <h3 className="text-xl font-bold text-surface-primary mb-4 flex items-center gap-2">
+                         <Lightbulb className="w-6 h-6 text-accent" />
+                         Rekomendasi
+                    </h3>
                     <ul className="space-y-3">
                          {recommendations.map((rec, index) => (
-                              <li key={index} className="flex items-start gap-3 text-surface-primary">
-                                   <span className="text-lg mt-0.5">•</span>
-                                   <span className="flex-1">{rec}</span>
+                              <li key={index} className="flex items-start gap-3 text-surface-primary bg-background/40 p-3 rounded-xl">
+                                   <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                                   <span className="flex-1 text-sm">{rec}</span>
                               </li>
                          ))}
                     </ul>
@@ -113,7 +124,7 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
 interface MetricCardProps {
      title: string
      value: number
-     icon: string
+     icon: React.ReactNode
      color: 'blue' | 'cyan' | 'green'
 }
 
@@ -125,9 +136,9 @@ const MetricCard: React.FC<MetricCardProps> = ({ title, value, icon, color }) =>
      }
 
      return (
-          <div className={`bg-linear-to-br ${colorClasses[color]} text-white rounded-2xl p-5 shadow-lg`}>
-               <div className="text-3xl mb-2">{icon}</div>
-               <div className="text-sm font-medium opacity-90 mb-1">{title}</div>
+          <div className={`bg-linear-to-br ${colorClasses[color]} text-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105`}>
+               <div className="mb-3 opacity-90">{icon}</div>
+               <div className="text-xs font-medium opacity-90 mb-2">{title}</div>
                <div className="text-3xl font-bold">{value}%</div>
           </div>
      )

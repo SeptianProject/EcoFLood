@@ -1,6 +1,7 @@
 "use client"
 
 import React from 'react'
+import { TreePine, CloudRain, Sprout } from 'lucide-react'
 
 interface SimulationControlsProps {
      forestCover: number
@@ -21,13 +22,19 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
 }) => {
      return (
           <div className="bg-surface-primary/5 backdrop-blur-sm rounded-3xl p-8 shadow-lg border-2 border-surface-primary/20">
-               <h2 className="text-2xl font-bold text-surface-primary mb-6">Parameter Simulasi</h2>
+               <h2 className="text-2xl font-bold text-surface-primary mb-6 flex items-center gap-2">
+                    <div className="bg-primary/20 p-2 rounded-xl">
+                         <TreePine className="w-5 h-5 text-surface-primary" />
+                    </div>
+                    Parameter Simulasi
+               </h2>
 
                {/* Forest Cover Control */}
                <div className="mb-8">
                     <div className="flex justify-between items-center mb-3">
-                         <label className="text-surface-primary font-semibold">
-                              🌳 Tutupan Hutan
+                         <label className="text-surface-primary font-semibold flex items-center gap-2">
+                              <TreePine className="w-5 h-5 text-green-600" />
+                              Tutupan Hutan
                          </label>
                          <span className="text-2xl font-bold text-primary">{forestCover}%</span>
                     </div>
@@ -50,8 +57,9 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
                {/* Rainfall Control */}
                <div className="mb-8">
                     <div className="flex justify-between items-center mb-3">
-                         <label className="text-surface-primary font-semibold">
-                              💧 Intensitas Hujan
+                         <label className="text-surface-primary font-semibold flex items-center gap-2">
+                              <CloudRain className="w-5 h-5 text-blue-600" />
+                              Intensitas Hujan
                          </label>
                          <span className="text-2xl font-bold text-accent">{rainfall} mm</span>
                     </div>
@@ -73,8 +81,9 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
 
                {/* Soil Absorption Control */}
                <div>
-                    <label className="block text-surface-primary font-semibold mb-3">
-                         🌱 Kemampuan Penyerapan Tanah
+                    <label className="text-surface-primary font-semibold mb-3 flex items-center gap-2">
+                         <Sprout className="w-5 h-5 text-emerald-600" />
+                         Kemampuan Penyerapan Tanah
                     </label>
                     <div className="grid grid-cols-3 gap-3">
                          <SoilButton
@@ -163,8 +172,8 @@ const SoilButton: React.FC<SoilButtonProps> = ({ label, selected, onClick, color
           <button
                onClick={onClick}
                className={`py-3 px-4 rounded-xl font-semibold transition-all duration-300 ${selected
-                         ? `${color} text-white scale-105 shadow-lg`
-                         : 'bg-surface-primary/10 text-surface-primary hover:bg-surface-primary/20'
+                    ? `${color} text-white scale-105 shadow-lg`
+                    : 'bg-surface-primary/10 text-surface-primary hover:bg-surface-primary/20'
                     }`}
           >
                {label}

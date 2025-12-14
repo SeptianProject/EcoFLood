@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useMemo } from 'react'
-import { ArrowLeft, RefreshCw } from 'lucide-react'
+import { ArrowLeft, RefreshCw, Beaker, TreePine, CloudRain, Sprout, BarChart3, TrendingUp, AlertCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import SimulationControls from '@/components/simulasi/SimulationControls'
 import SimulationResults from '@/components/simulasi/SimulationResults'
@@ -64,17 +64,19 @@ const Page = () => {
                {/* Main Content */}
                <div className='max-w-7xl mx-auto px-8 py-12'>
                     {/* Info Banner */}
-                    <div className='bg-linear-to-r from-primary/20 to-accent/20 rounded-3xl p-6 mb-8 border-2 border-primary/30'>
+                    <div className='bg-linear-to-r from-primary/20 to-accent/20 rounded-3xl p-6 mb-8 border-2 border-primary/30 shadow-lg'>
                          <div className='flex items-start gap-4'>
-                              <div className='text-4xl'>🔬</div>
-                              <div>
-                                   <h3 className='text-xl font-bold text-surface-primary mb-2'>
-                                        Bagaimana Cara Kerja Simulasi Ini?
+                              <div className='bg-primary/20 p-3 rounded-2xl'>
+                                   <Beaker className='w-10 h-10 text-surface-primary' />
+                              </div>
+                              <div className='flex-1'>
+                                   <h3 className='text-xl font-bold text-surface-primary mb-2 flex items-center gap-2'>
+                                        Simulasi Lingkungan Real-Time
+                                        <TrendingUp className='w-5 h-5 text-accent' />
                                    </h3>
-                                   <p className='text-surface-primary/80'>
-                                        Ubah parameter tutupan hutan, intensitas hujan, dan kemampuan penyerapan tanah
-                                        untuk melihat bagaimana perubahan lingkungan mempengaruhi risiko banjir.
-                                        Simulasi ini menggunakan model prediktif berdasarkan data historis dan penelitian ilmiah.
+                                   <p className='text-surface-primary/80 text-sm leading-relaxed'>
+                                        Atur <strong>persentase tutupan hutan</strong> dan <strong>intensitas hujan</strong> untuk melihat perubahan potensi banjir secara real-time.
+                                        Simulasi ini menggunakan model prediktif berbasis data historis dan penelitian ilmiah untuk memberikan hasil yang akurat.
                                    </p>
                               </div>
                          </div>
@@ -94,9 +96,10 @@ const Page = () => {
                               />
 
                               {/* Quick Scenarios */}
-                              <div className='bg-surface-primary/5 rounded-3xl p-6 border-2 border-surface-primary/20'>
-                                   <h3 className='text-xl font-bold text-surface-primary mb-4'>
-                                        🎯 Skenario Cepat
+                              <div className='bg-surface-primary/5 rounded-3xl p-6 border-2 border-surface-primary/20 shadow-md'>
+                                   <h3 className='text-xl font-bold text-surface-primary mb-4 flex items-center gap-2'>
+                                        <BarChart3 className='w-5 h-5 text-accent' />
+                                        Skenario Cepat
                                    </h3>
                                    <div className='space-y-3'>
                                         <ScenarioButton
@@ -107,7 +110,8 @@ const Page = () => {
                                                   setRainfall(100)
                                                   setSoilAbsorption('high')
                                              }}
-                                             icon="🌲"
+                                             icon={<TreePine className='w-6 h-6' />}
+                                             color="text-green-600"
                                         />
                                         <ScenarioButton
                                              label="Deforestasi Berat"
@@ -117,7 +121,8 @@ const Page = () => {
                                                   setRainfall(250)
                                                   setSoilAbsorption('low')
                                              }}
-                                             icon="⚠️"
+                                             icon={<AlertCircle className='w-6 h-6' />}
+                                             color="text-red-600"
                                         />
                                         <ScenarioButton
                                              label="Kondisi Rata-rata"
@@ -127,7 +132,8 @@ const Page = () => {
                                                   setRainfall(180)
                                                   setSoilAbsorption('medium')
                                              }}
-                                             icon="📊"
+                                             icon={<BarChart3 className='w-6 h-6' />}
+                                             color="text-yellow-600"
                                         />
                                    </div>
                               </div>
@@ -149,19 +155,22 @@ const Page = () => {
                     {/* Educational Content */}
                     <div className='mt-12 grid grid-cols-1 md:grid-cols-3 gap-6'>
                          <EducationCard
-                              icon="🌳"
+                              icon={<TreePine className='w-10 h-10' />}
                               title="Peran Hutan"
                               description="Hutan bertindak sebagai penyerap air alami. Akar pohon menahan air hujan dan mencegah aliran permukaan yang berlebihan."
+                              color="text-green-600"
                          />
                          <EducationCard
-                              icon="💧"
+                              icon={<CloudRain className='w-10 h-10' />}
                               title="Dampak Hujan"
                               description="Intensitas hujan tinggi dapat melampaui kapasitas penyerapan tanah, menyebabkan banjir terutama di area tanpa tutupan hutan."
+                              color="text-blue-600"
                          />
                          <EducationCard
-                              icon="🌱"
+                              icon={<Sprout className='w-10 h-10' />}
                               title="Kualitas Tanah"
                               description="Tanah dengan penyerapan baik dapat mengurangi risiko banjir hingga 50%. Deforestasi merusak struktur tanah."
+                              color="text-emerald-600"
                          />
                     </div>
                </div>
@@ -173,17 +182,20 @@ interface ScenarioButtonProps {
      label: string
      description: string
      onClick: () => void
-     icon: string
+     icon: React.ReactNode
+     color: string
 }
 
-const ScenarioButton: React.FC<ScenarioButtonProps> = ({ label, description, onClick, icon }) => {
+const ScenarioButton: React.FC<ScenarioButtonProps> = ({ label, description, onClick, icon, color }) => {
      return (
           <button
                onClick={onClick}
-               className='w-full bg-background hover:bg-surface-primary hover:text-background text-surface-primary rounded-2xl p-4 transition-all duration-300 text-left group border-2 border-surface-primary/20 hover:border-primary hover:scale-102'
+               className='w-full bg-background hover:bg-surface-primary hover:text-background text-surface-primary rounded-2xl p-4 transition-all duration-300 text-left group border-2 border-surface-primary/20 hover:border-primary hover:scale-102 shadow-sm hover:shadow-md'
           >
                <div className='flex items-center gap-3'>
-                    <div className='text-3xl'>{icon}</div>
+                    <div className={`${color} transition-transform group-hover:scale-110 duration-300`}>
+                         {icon}
+                    </div>
                     <div className='flex-1'>
                          <div className='font-bold text-sm mb-0.5'>{label}</div>
                          <div className='text-xs opacity-70'>{description}</div>
@@ -194,17 +206,20 @@ const ScenarioButton: React.FC<ScenarioButtonProps> = ({ label, description, onC
 }
 
 interface EducationCardProps {
-     icon: string
+     icon: React.ReactNode
      title: string
      description: string
+     color: string
 }
 
-const EducationCard: React.FC<EducationCardProps> = ({ icon, title, description }) => {
+const EducationCard: React.FC<EducationCardProps> = ({ icon, title, description, color }) => {
      return (
-          <div className='bg-linear-to-br from-surface-primary/10 to-surface-primary/5 rounded-2xl p-6 border-2 border-surface-primary/20'>
-               <div className='text-4xl mb-3'>{icon}</div>
+          <div className='bg-linear-to-br from-surface-primary/10 to-surface-primary/5 rounded-2xl p-6 border-2 border-surface-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-lg group'>
+               <div className={`${color} mb-3 transition-transform group-hover:scale-110 duration-300`}>
+                    {icon}
+               </div>
                <h4 className='text-lg font-bold text-surface-primary mb-2'>{title}</h4>
-               <p className='text-surface-primary/70 text-sm'>{description}</p>
+               <p className='text-surface-primary/70 text-sm leading-relaxed'>{description}</p>
           </div>
      )
 }
