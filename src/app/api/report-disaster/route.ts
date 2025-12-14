@@ -21,10 +21,11 @@ export async function POST(request: Request) {
         const longitude = formData.get('longitude');
         const description = formData.get('description');
         const imageUrl = formData.get('imageUrl') as File | null;
+        const type_disaster = formData.get('type_disaster');
 
-        if (!latitude || !longitude || !description || !imageUrl) {
+        if (!latitude || !longitude || !description || !imageUrl || !type_disaster) {
             return NextResponse.json({
-                error: "Semua data wajib diisi!\nlatitude:" + latitude + " \nlongitude:"  + longitude + "\ndescription: " + description + "\nimageUrl" + imageUrl,
+                error: "Semua data wajib diisi!\nlatitude:" + latitude + " \nlongitude:"  + longitude + "\ndescription: " + description + "\nimageUrl: " + imageUrl + "\ntype disaster: " + type_disaster,
             }, { status: 400 });
         }
 
@@ -39,14 +40,15 @@ export async function POST(request: Request) {
         const latValue = parseFloat(latitude as string);
         const lngValue = parseFloat(longitude as string);
         const descValue = description as string;
+        const type_disasterValue = type_disaster as string;
         const url = uploadImage.secure_url;
         
         await dbInitPromis;
 
         const newReport = await db.execute({
-            sql: `INSERT INTO reports (latitude, longitude, description, imageUrl, status, createdAt)  
-            VALUES (?, ?, ?, ?, ?, ?); `,
-            args: [latValue, lngValue, descValue, url, 'pending', Date.now()]
+            sql: `INSERT INTO reports (latitude, longitude, description, imageUrl, status, createdAt, type_disaster)  
+            VALUES (?, ?, ?, ?, ?, ?, ?); `,
+            args: [latValue, lngValue, descValue, url, 'pending', Date.now(), type_disasterValue]
         });
 
         return NextResponse.json(newReport, { status: 201 });

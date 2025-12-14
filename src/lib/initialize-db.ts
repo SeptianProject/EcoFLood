@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS reports(
     longitude REAL NOT NULL,
     description TEXT,
     imageUrl TEXT,
+    type_disaster TEXT,
     status TEXT CHECK(status IN ('pending', 'success')) NOT NULL,
     createdAt TEXT DEFAULT CURRENT_TIMESTAMP
 );
