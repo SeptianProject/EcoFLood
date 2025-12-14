@@ -4,7 +4,7 @@ import Footer from '@/components/layout/Footer'
 import Header from '@/components/layout/Header'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { MapIcon, Activity, MessageSquare, Shield, TrendingUp, Users, Droplets, Trees, AlertTriangle, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react'
+import { MapIcon, Activity, MessageSquare, Shield, TrendingUp, Users, Trees, AlertTriangle, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react'
 
 const Page = () => {
   const router = useRouter()
@@ -26,7 +26,7 @@ const Page = () => {
               {/* Trust Badge */}
               <div className='inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-4 py-2'>
                 <div className='w-2 h-2 bg-emerald-500 rounded-full animate-pulse' />
-                <span className='text-sm font-semibold text-emerald-800'>Dipercaya 50+ Daerah di Indonesia</span>
+                <span className='text-sm font-semibold text-emerald-800'>Platform Monitoring Deforestasi & Banjir</span>
               </div>
 
               {/* Main Heading */}
@@ -61,7 +61,7 @@ const Page = () => {
                   <div className='w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center shrink-0'>
                     <CheckCircle2 className='text-surface-primary' size={16} />
                   </div>
-                  <span className='text-sm md:text-base text-gray-700'>Laporan partisipatif dari 500+ warga aktif</span>
+                  <span className='text-sm md:text-base text-gray-700'>Sistem pelaporan partisipatif masyarakat</span>
                 </div>
               </div>
 
@@ -82,32 +82,25 @@ const Page = () => {
                 </button>
               </div>
 
-              {/* Social Proof */}
+              {/* Trust Indicators */}
               <div className='flex items-center gap-6 mt-4 pt-4 border-t border-gray-200'>
                 <div className='flex items-center gap-2'>
-                  <div className='flex -space-x-2'>
-                    <div className='w-8 h-8 rounded-full bg-linear-to-br from-emerald-400 to-teal-500 border-2 border-background' />
-                    <div className='w-8 h-8 rounded-full bg-linear-to-br from-blue-400 to-cyan-500 border-2 border-background' />
-                    <div className='w-8 h-8 rounded-full bg-linear-to-br from-orange-400 to-amber-500 border-2 border-background' />
-                    <div className='w-8 h-8 rounded-full bg-linear-to-br from-purple-400 to-pink-500 border-2 border-background' />
+                  <div className='w-10 h-10 bg-surface-primary/10 rounded-xl flex items-center justify-center'>
+                    <Shield className='text-surface-primary' size={20} />
                   </div>
                   <div className='text-sm'>
-                    <p className='font-bold text-gray-900'>500+ Pengguna</p>
-                    <p className='text-gray-600 text-xs'>Aktif berkontribusi</p>
+                    <p className='font-bold text-gray-900'>Data Terverifikasi</p>
+                    <p className='text-gray-600 text-xs'>Sistem verifikasi admin</p>
                   </div>
                 </div>
                 <div className='h-8 w-px bg-gray-300' />
                 <div className='flex items-center gap-2'>
-                  <div className='flex items-center'>
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <svg key={star} className='w-4 h-4 text-amber-400 fill-current' viewBox='0 0 20 20'>
-                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                      </svg>
-                    ))}
+                  <div className='w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center'>
+                    <MapIcon className='text-surface-primary' size={20} />
                   </div>
                   <div className='text-sm'>
-                    <p className='font-bold text-gray-900'>4.8/5</p>
-                    <p className='text-gray-600 text-xs'>Rating pengguna</p>
+                    <p className='font-bold text-gray-900'>Open Source</p>
+                    <p className='text-gray-600 text-xs'>Gratis & Transparan</p>
                   </div>
                 </div>
               </div>
@@ -177,10 +170,10 @@ const Page = () => {
               </div>
               <h3 className='text-xl md:text-2xl font-bold mb-3 text-gray-900'>Mengurangi Risiko Banjir</h3>
               <p className='text-sm md:text-base text-gray-700 leading-relaxed mb-4'>
-                Mencegah deforestasi untuk generasi masa depan melalui konservasi hutan yang berkelanjutan.
+                Monitoring deforestasi real-time dari Global Forest Watch untuk mencegah kerusakan hutan dan dampak banjir.
               </p>
               <div className='pt-4 border-t border-emerald-200'>
-                <p className='text-xs text-gray-600'><span className='font-bold text-surface-primary'>12,000+ hektar</span> hutan terpantau</p>
+                <p className='text-xs text-gray-600'><span className='font-bold text-surface-primary'>Data Global Forest Watch</span> terintegrasi</p>
               </div>
             </div>
 
@@ -199,7 +192,7 @@ const Page = () => {
                 Menjaga keseimbangan ekosistem hutan untuk masa depan yang berkelanjutan dan hijau.
               </p>
               <div className='pt-4 border-t border-teal-200'>
-                <p className='text-xs text-gray-600'><span className='font-bold text-surface-primary'>95% akurasi</span> prediksi dampak</p>
+                <p className='text-xs text-gray-600'><span className='font-bold text-surface-primary'>Algoritma berbasis riset</span> hidrologi</p>
               </div>
             </div>
 
@@ -210,15 +203,15 @@ const Page = () => {
               <div className='mb-4'>
                 <div className='inline-flex items-center gap-2 bg-cyan-100 px-3 py-1 rounded-full mb-3'>
                   <Users size={14} className='text-cyan-700' />
-                  <span className='text-xs font-bold text-cyan-700'>500+ Aktif</span>
+                  <span className='text-xs font-bold text-cyan-700'>Partisipatif</span>
                 </div>
               </div>
               <h3 className='text-xl md:text-2xl font-bold mb-3 text-gray-900'>Memberdayakan Masyarakat</h3>
               <p className='text-sm md:text-base text-gray-700 leading-relaxed mb-4'>
-                Mendorong inisiatif keberlanjutan lokal untuk keterlibatan dan pemberdayaan masyarakat.
+                Mendorong partisipasi aktif masyarakat dalam pelaporan bencana dan monitoring lingkungan.
               </p>
               <div className='pt-4 border-t border-cyan-200'>
-                <p className='text-xs text-gray-600'><span className='font-bold text-surface-primary'>50+ daerah</span> berpartisipasi</p>
+                <p className='text-xs text-gray-600'><span className='font-bold text-surface-primary'>Sistem crowdsourcing</span> terbuka untuk umum</p>
               </div>
             </div>
           </div>
@@ -433,45 +426,45 @@ const Page = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Features Highlight Section */}
       <section className='py-16 md:py-20 px-6 md:px-12 lg:px-20 bg-surface-primary'>
         <div className='max-w-7xl mx-auto'>
-          <div className='grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12'>
-            <div className='text-center'>
-              <div className='flex justify-center mb-4'>
-                <div className='p-3 bg-primary/20 rounded-xl'>
-                  <Droplets className='text-primary' size={36} />
-                </div>
-              </div>
-              <h3 className='text-3xl md:text-5xl font-bold text-background mb-2'>12K+</h3>
-              <p className='text-background/80 text-sm md:text-base'>Hektar Dipantau</p>
-            </div>
-            <div className='text-center'>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8'>
+            <div className='text-center bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-primary/20'>
               <div className='flex justify-center mb-4'>
                 <div className='p-3 bg-primary/20 rounded-xl'>
                   <MapIcon className='text-primary' size={36} />
                 </div>
               </div>
-              <h3 className='text-3xl md:text-5xl font-bold text-background mb-2'>50+</h3>
-              <p className='text-background/80 text-sm md:text-base'>Area Terpantau</p>
+              <h3 className='text-2xl md:text-3xl font-bold text-background mb-2'>Real-time</h3>
+              <p className='text-background/80 text-sm md:text-base'>Data GFW Terintegrasi</p>
             </div>
-            <div className='text-center'>
+            <div className='text-center bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-primary/20'>
               <div className='flex justify-center mb-4'>
                 <div className='p-3 bg-primary/20 rounded-xl'>
-                  <Users className='text-primary' size={36} />
+                  <Activity className='text-primary' size={36} />
                 </div>
               </div>
-              <h3 className='text-3xl md:text-5xl font-bold text-background mb-2'>500+</h3>
-              <p className='text-background/80 text-sm md:text-base'>Laporan Warga</p>
+              <h3 className='text-2xl md:text-3xl font-bold text-background mb-2'>AI-Powered</h3>
+              <p className='text-background/80 text-sm md:text-base'>Simulasi Prediksi</p>
             </div>
-            <div className='text-center'>
+            <div className='text-center bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-primary/20'>
               <div className='flex justify-center mb-4'>
                 <div className='p-3 bg-primary/20 rounded-xl'>
-                  <TrendingUp className='text-primary' size={36} />
+                  <MessageSquare className='text-primary' size={36} />
                 </div>
               </div>
-              <h3 className='text-3xl md:text-5xl font-bold text-background mb-2'>95%</h3>
-              <p className='text-background/80 text-sm md:text-base'>Akurasi Prediksi</p>
+              <h3 className='text-2xl md:text-3xl font-bold text-background mb-2'>Crowdsource</h3>
+              <p className='text-background/80 text-sm md:text-base'>Laporan Masyarakat</p>
+            </div>
+            <div className='text-center bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-primary/20'>
+              <div className='flex justify-center mb-4'>
+                <div className='p-3 bg-primary/20 rounded-xl'>
+                  <Shield className='text-primary' size={36} />
+                </div>
+              </div>
+              <h3 className='text-2xl md:text-3xl font-bold text-background mb-2'>Verified</h3>
+              <p className='text-background/80 text-sm md:text-base'>Sistem Verifikasi</p>
             </div>
           </div>
         </div>
@@ -498,7 +491,7 @@ const Page = () => {
 
           {/* Description */}
           <p className='text-base md:text-lg text-background/90 mb-8 max-w-2xl mx-auto leading-relaxed'>
-            Bergabunglah dengan <span className='font-bold text-primary'>500+ warga</span> dan <span className='font-bold text-primary'>50+ daerah</span> dalam memantau deforestasi dan mencegah banjir. Setiap data, setiap laporan, membuat perbedaan nyata.
+            Bergabunglah dalam memantau deforestasi dan mencegah banjir dengan teknologi terkini. Platform open-source yang menggabungkan data satelit, AI, dan partisipasi masyarakat.
           </p>
 
           {/* Value Props */}
@@ -506,23 +499,23 @@ const Page = () => {
             <div className='bg-background/10 backdrop-blur-sm rounded-xl p-4 border border-background/20'>
               <div className='flex items-center justify-center gap-2 mb-2'>
                 <MapIcon className='text-primary' size={20} />
-                <span className='font-bold text-background'>Gratis</span>
+                <span className='font-bold text-background'>Open Source</span>
               </div>
-              <p className='text-sm text-background/80'>100% gratis untuk semua</p>
+              <p className='text-sm text-background/80'>Gratis & transparan</p>
             </div>
             <div className='bg-background/10 backdrop-blur-sm rounded-xl p-4 border border-background/20'>
               <div className='flex items-center justify-center gap-2 mb-2'>
                 <Activity className='text-primary' size={20} />
-                <span className='font-bold text-background'>Real-time</span>
+                <span className='font-bold text-background'>Real-time Data</span>
               </div>
-              <p className='text-sm text-background/80'>Data update setiap hari</p>
+              <p className='text-sm text-background/80'>Dari Global Forest Watch</p>
             </div>
             <div className='bg-background/10 backdrop-blur-sm rounded-xl p-4 border border-background/20'>
               <div className='flex items-center justify-center gap-2 mb-2'>
                 <Shield className='text-primary' size={20} />
-                <span className='font-bold text-background'>Akurat</span>
+                <span className='font-bold text-background'>Terverifikasi</span>
               </div>
-              <p className='text-sm text-background/80'>95% tingkat akurasi</p>
+              <p className='text-sm text-background/80'>Sistem verifikasi admin</p>
             </div>
           </div>
 
@@ -544,7 +537,7 @@ const Page = () => {
 
           {/* Trust Indicator */}
           <p className='mt-8 text-sm text-background/70'>
-            ✓ Dipercaya oleh pemerintah daerah • ✓ Data terverifikasi • ✓ Tanpa biaya tersembunyi
+            ✓ Data dari Global Forest Watch • ✓ Open source & transparan • ✓ Gratis untuk semua
           </p>
         </div>
       </section>
