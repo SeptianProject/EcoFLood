@@ -3,9 +3,17 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { MapIcon, Activity, CheckCircle2, AlertTriangle, ArrowRight, Shield } from 'lucide-react'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 export default function HeroSection() {
      const router = useRouter()
+     const [badgeRef, badgeVisible] = useScrollAnimation({ delay: 100, initialAnimation: true, waitForPageLoad: true })
+     const [headingRef, headingVisible] = useScrollAnimation({ delay: 300, initialAnimation: true, waitForPageLoad: true })
+     const [descriptionRef, descriptionVisible] = useScrollAnimation({ delay: 500, initialAnimation: true, waitForPageLoad: true })
+     const [featuresRef, featuresVisible] = useScrollAnimation({ delay: 700, initialAnimation: true, waitForPageLoad: true })
+     const [buttonsRef, buttonsVisible] = useScrollAnimation({ delay: 900, initialAnimation: true, waitForPageLoad: true })
+     const [trustRef, trustVisible] = useScrollAnimation({ delay: 1100, initialAnimation: true, waitForPageLoad: true })
+     const [imageRef, imageVisible] = useScrollAnimation({ delay: 400, initialAnimation: true, waitForPageLoad: true })
 
      return (
           <section className='relative min-h-screen flex items-center px-6 md:px-12 lg:px-20 pt-24 md:pt-32 pb-12 md:pb-20 overflow-hidden'>
@@ -18,13 +26,25 @@ export default function HeroSection() {
                          {/* Left Content */}
                          <div className='flex flex-col items-start gap-y-6 order-2 lg:order-1'>
                               {/* Trust Badge */}
-                              <div className='inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-4 py-2'>
+                              <div
+                                   ref={badgeRef}
+                                   className={`inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-4 py-2 transition-all duration-700 ${badgeVisible
+                                        ? 'opacity-100 translate-y-0'
+                                        : 'opacity-0 -translate-y-4'
+                                        }`}
+                              >
                                    <div className='w-2 h-2 bg-emerald-500 rounded-full animate-pulse' />
                                    <span className='text-sm font-semibold text-emerald-800'>Platform Monitoring Deforestasi & Banjir</span>
                               </div>
 
                               {/* Main Heading */}
-                              <div className='relative'>
+                              <div
+                                   ref={headingRef}
+                                   className={`relative transition-all duration-700 ${headingVisible
+                                        ? 'opacity-100 translate-y-0'
+                                        : 'opacity-0 translate-y-8'
+                                        }`}
+                              >
                                    <h1 className='text-4xl sm:text-5xl lg:text-6xl xl:text-[80px] leading-tight font-bold text-surface-primary'>
                                         Pantau Deforestasi. <span className='relative inline-block font-bold'>Cegah Banjir.
                                              <div className='bg-primary h-3 sm:h-4 lg:h-5 xl:h-9 w-full -rotate-1 absolute bottom-0 left-0 -z-10' />
@@ -33,12 +53,24 @@ export default function HeroSection() {
                               </div>
 
                               {/* Description */}
-                              <p className='text-gray-700 text-base sm:text-lg lg:text-xl leading-relaxed max-w-xl'>
+                              <p
+                                   ref={descriptionRef}
+                                   className={`text-gray-700 text-base sm:text-lg lg:text-xl leading-relaxed max-w-xl transition-all duration-700 ${descriptionVisible
+                                        ? 'opacity-100 translate-y-0'
+                                        : 'opacity-0 translate-y-8'
+                                        }`}
+                              >
                                    Platform visualisasi data untuk melihat dampak nyata hilangnya hutan terhadap risiko banjir di wilayah Anda dengan teknologi AI dan data real-time.
                               </p>
 
                               {/* Key Features List */}
-                              <div className='flex flex-col gap-3 my-2'>
+                              <div
+                                   ref={featuresRef}
+                                   className={`flex flex-col gap-3 my-2 transition-all duration-700 ${featuresVisible
+                                        ? 'opacity-100 translate-y-0'
+                                        : 'opacity-0 translate-y-8'
+                                        }`}
+                              >
                                    <div className='flex items-center gap-3'>
                                         <div className='w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center shrink-0'>
                                              <CheckCircle2 className='text-surface-primary' size={16} />
@@ -60,7 +92,13 @@ export default function HeroSection() {
                               </div>
 
                               {/* CTA Buttons */}
-                              <div className='flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mt-2'>
+                              <div
+                                   ref={buttonsRef}
+                                   className={`flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mt-2 transition-all duration-700 ${buttonsVisible
+                                        ? 'opacity-100 translate-y-0'
+                                        : 'opacity-0 translate-y-8'
+                                        }`}
+                              >
                                    <button
                                         onClick={() => router.push('/peta')}
                                         className='group bg-surface-primary text-background px-8 py-4 rounded-full font-semibold cursor-pointer hover:bg-surface-primary/90 transition-all duration-300 hover:shadow-xl hover:scale-105 active:scale-95 text-center flex items-center justify-center gap-2'>
@@ -77,7 +115,13 @@ export default function HeroSection() {
                               </div>
 
                               {/* Trust Indicators */}
-                              <div className='flex items-center gap-6 mt-4 pt-4 border-t border-gray-200'>
+                              <div
+                                   ref={trustRef}
+                                   className={`flex items-center gap-6 mt-4 pt-4 border-t border-gray-200 transition-all duration-700 ${trustVisible
+                                        ? 'opacity-100 translate-y-0'
+                                        : 'opacity-0 translate-y-8'
+                                        }`}
+                              >
                                    <div className='flex items-center gap-2'>
                                         <div className='w-10 h-10 bg-surface-primary/10 rounded-xl flex items-center justify-center'>
                                              <Shield className='text-surface-primary' size={20} />
@@ -101,7 +145,13 @@ export default function HeroSection() {
                          </div>
 
                          {/* Right Content - Hero Image (Hidden on Mobile) */}
-                         <div className='relative order-1 lg:order-2 hidden lg:block'>
+                         <div
+                              ref={imageRef}
+                              className={`relative order-1 lg:order-2 hidden lg:block transition-all duration-1000 ${imageVisible
+                                   ? 'opacity-100 translate-x-0'
+                                   : 'opacity-0 translate-x-12'
+                                   }`}
+                         >
                               <div className='relative w-full h-112.5 sm:h-137.5 lg:h-162.5 xl:h-175 rounded-3xl overflow-hidden shadow-2xl'>
                                    <Image
                                         src="/hero-image.png"

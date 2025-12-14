@@ -2,15 +2,26 @@
 
 import { useRouter } from 'next/navigation'
 import { MapIcon, Activity, MessageSquare, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 export default function FeaturesSection() {
      const router = useRouter()
+     const [headerRef, headerVisible] = useScrollAnimation({ delay: 100 })
+     const [petaRef, petaVisible] = useScrollAnimation({ delay: 200 })
+     const [simulasiRef, simulasiVisible] = useScrollAnimation({ delay: 300 })
+     const [laporanRef, laporanVisible] = useScrollAnimation({ delay: 400 })
 
      return (
           <section className='py-20 md:py-32 px-6 md:px-12 lg:px-20 bg-background relative'>
                <div className='max-w-7xl mx-auto'>
                     {/* Section Header */}
-                    <div className='text-center mb-16 md:mb-20'>
+                    <div
+                         ref={headerRef}
+                         className={`text-center mb-16 md:mb-20 transition-all duration-700 ${headerVisible
+                                   ? 'opacity-100 translate-y-0'
+                                   : 'opacity-0 translate-y-8'
+                              }`}
+                    >
                          <div className='inline-block mb-4'>
                               <span className='inline-flex items-center gap-2 bg-primary/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold text-surface-primary'>
                                    <Sparkles size={16} />
@@ -28,7 +39,13 @@ export default function FeaturesSection() {
                     {/* Features Grid */}
                     <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8'>
                          {/* Peta Feature */}
-                         <div className='group bg-linear-to-br from-emerald-50 via-green-50 to-teal-50 p-8 md:p-10 rounded-3xl border-2 border-surface-primary/20 hover:border-surface-primary/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1'>
+                         <div
+                              ref={petaRef}
+                              className={`group bg-linear-to-br from-emerald-50 via-green-50 to-teal-50 p-8 md:p-10 rounded-3xl border-2 border-surface-primary/20 hover:border-surface-primary/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 ${petaVisible
+                                        ? 'opacity-100 translate-y-0'
+                                        : 'opacity-0 translate-y-12'
+                                   }`}
+                         >
                               <div className='flex items-start gap-5 mb-6'>
                                    <div className='w-16 h-16 bg-surface-primary rounded-2xl flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300'>
                                         <MapIcon className='text-background' size={30} />
@@ -64,7 +81,13 @@ export default function FeaturesSection() {
                          </div>
 
                          {/* Simulasi Feature */}
-                         <div className='group bg-linear-to-br from-blue-50 via-cyan-50 to-sky-50 p-8 md:p-10 rounded-3xl border-2 border-blue-300/30 hover:border-blue-400/60 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1'>
+                         <div
+                              ref={simulasiRef}
+                              className={`group bg-linear-to-br from-blue-50 via-cyan-50 to-sky-50 p-8 md:p-10 rounded-3xl border-2 border-blue-300/30 hover:border-blue-400/60 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 ${simulasiVisible
+                                        ? 'opacity-100 translate-y-0'
+                                        : 'opacity-0 translate-y-12'
+                                   }`}
+                         >
                               <div className='flex items-start gap-5 mb-6'>
                                    <div className='w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300'>
                                         <Activity className='text-white' size={30} />
@@ -100,7 +123,13 @@ export default function FeaturesSection() {
                          </div>
 
                          {/* Laporan Feature */}
-                         <div className='group bg-linear-to-br from-orange-50 via-amber-50 to-yellow-50 p-8 md:p-10 rounded-3xl border-2 border-accent/20 hover:border-accent/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 lg:col-span-2'>
+                         <div
+                              ref={laporanRef}
+                              className={`group bg-linear-to-br from-orange-50 via-amber-50 to-yellow-50 p-8 md:p-10 rounded-3xl border-2 border-accent/20 hover:border-accent/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 lg:col-span-2 ${laporanVisible
+                                        ? 'opacity-100 translate-y-0'
+                                        : 'opacity-0 translate-y-12'
+                                   }`}
+                         >
                               <div className='flex flex-col lg:flex-row lg:items-start gap-8'>
                                    <div className='flex-1'>
                                         <div className='flex items-start gap-5 mb-6'>

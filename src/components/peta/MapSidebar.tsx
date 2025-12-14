@@ -4,6 +4,7 @@ import React from 'react'
 import { ArrowLeft, Trees, Droplets, Flame, Leaf, Users } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import UserReportsLegend from './UserReportsLegend'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 interface MapSidebarProps {
      selectedIsland: string
@@ -34,6 +35,12 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
 }) => {
      const router = useRouter()
 
+     // Animation hooks untuk setiap section
+     const [headerRef, headerVisible] = useScrollAnimation({ initialAnimation: true, delay: 100 })
+     const [islandRef, islandVisible] = useScrollAnimation({ initialAnimation: true, delay: 200 })
+     const [timelineRef, timelineVisible] = useScrollAnimation({ initialAnimation: true, delay: 300 })
+     const [layersRef, layersVisible] = useScrollAnimation({ initialAnimation: true, delay: 400 })
+
      const islands = [
           { value: 'all', label: 'Semua Pulau' },
           { value: 'sumatra', label: 'Sumatra' },
@@ -51,7 +58,13 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
                style={{ zIndex: 999 }}
           >
                {/* Header with Back Button and Close Button */}
-               <div className="mb-6">
+               <div
+                    ref={headerRef}
+                    className={`mb-6 transition-all duration-700 ${headerVisible
+                              ? 'opacity-100 translate-y-0'
+                              : 'opacity-0 -translate-y-4'
+                         }`}
+               >
                     <div className="flex items-center justify-between mb-4">
                          <button
                               onClick={() => router.push('/')}
@@ -77,7 +90,13 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
                </div>
 
                {/* Island/Region Select */}
-               <div className="mb-6">
+               <div
+                    ref={islandRef}
+                    className={`mb-6 transition-all duration-700 ${islandVisible
+                              ? 'opacity-100 translate-y-0'
+                              : 'opacity-0 -translate-y-4'
+                         }`}
+               >
                     <label className="block text-background font-semibold mb-2 text-sm">
                          Pilih Wilayah
                     </label>
@@ -95,7 +114,13 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
                </div>
 
                {/* Timeline Slider */}
-               <div className="mb-6">
+               <div
+                    ref={timelineRef}
+                    className={`mb-6 transition-all duration-700 ${timelineVisible
+                              ? 'opacity-100 translate-y-0'
+                              : 'opacity-0 -translate-y-4'
+                         }`}
+               >
                     <label className="block text-background font-semibold mb-2 text-sm">
                          Timeline: {selectedYear}
                     </label>
@@ -114,7 +139,13 @@ const MapSidebar: React.FC<MapSidebarProps> = ({
                </div>
 
                {/* Layer Controls */}
-               <div className="flex-1">
+               <div
+                    ref={layersRef}
+                    className={`flex-1 transition-all duration-700 ${layersVisible
+                              ? 'opacity-100 translate-y-0'
+                              : 'opacity-0 -translate-y-4'
+                         }`}
+               >
                     <label className="block text-background font-semibold mb-3 text-sm">
                          Layer Peta
                     </label>

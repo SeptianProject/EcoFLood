@@ -7,6 +7,7 @@ import {
      Eye, BookOpen, CheckCircle, Sparkles, ClipboardCheck, Zap, Wind, Construction
 } from 'lucide-react'
 import { Recommendation } from '@/services/simulation'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 interface SimulationResultsProps {
      floodProbability: number
@@ -29,6 +30,11 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
      factors,
      recommendations
 }) => {
+     // Animation hooks untuk setiap section
+     const [riskRef, riskVisible] = useScrollAnimation({ initialAnimation: true, delay: 100 })
+     const [metricsRef, metricsVisible] = useScrollAnimation({ initialAnimation: true, delay: 200 })
+     const [factorsRef, factorsVisible] = useScrollAnimation({ initialAnimation: true, delay: 300 })
+
      const riskColors = {
           low: { bg: 'bg-green-500', text: 'text-green-500', label: 'Rendah' },
           medium: { bg: 'bg-yellow-500', text: 'text-yellow-500', label: 'Sedang' },
@@ -48,7 +54,11 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
      return (
           <div className="space-y-4 sm:space-y-6">
                {/* Risk Level Banner */}
-               <div className={`${currentRisk.bg} text-white rounded-3xl p-6 shadow-xl`}>
+               <div
+                    ref={riskRef}
+                    className={`${currentRisk.bg} text-white rounded-3xl p-6 shadow-xl transition-all duration-700 ${riskVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                         }`}
+               >
                     <div className="flex items-center justify-between">
                          <div className="flex-1">
                               <h3 className="text-lg font-semibold mb-1">Tingkat Risiko Banjir</h3>
@@ -64,7 +74,11 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
                </div>
 
                {/* Key Metrics */}
-               <div className="grid grid-cols-3 gap-4">
+               <div
+                    ref={metricsRef}
+                    className={`grid grid-cols-3 gap-4 transition-all duration-700 ${metricsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                         }`}
+               >
                     <MetricCard
                          title="Probabilitas Banjir"
                          value={floodProbability}
@@ -86,7 +100,11 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
                </div>
 
                {/* Impact Factors */}
-               <div className="bg-surface-primary/5 rounded-3xl p-6 border-2 border-surface-primary/20">
+               <div
+                    ref={factorsRef}
+                    className={`bg-surface-primary/5 rounded-3xl p-6 border-2 border-surface-primary/20 transition-all duration-700 ${factorsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                         }`}
+               >
                     <h3 className="text-xl font-bold text-surface-primary mb-4">Faktor Dampak</h3>
                     <div className="space-y-4">
                          <FactorBar

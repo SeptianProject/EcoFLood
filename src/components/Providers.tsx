@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactNode, useState, useEffect } from 'react';
 import { store } from '@/store';
 import { Provider } from 'react-redux';
+import { PageLoadProvider } from '@/contexts/PageLoadContext';
 
 function makeQueryClient() {
      return new QueryClient({
@@ -49,8 +50,10 @@ export default function Providers({ children }: { children: ReactNode }) {
      return (
           <Provider store={store}>
                <QueryClientProvider client={queryClient}>
-                    {children}
-                    {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
+                    <PageLoadProvider>
+                         {children}
+                         {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
+                    </PageLoadProvider>
                </QueryClientProvider>
           </Provider>
      )

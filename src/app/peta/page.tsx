@@ -162,7 +162,7 @@ const Page = () => {
      }
 
      return (
-          <div className='h-screen w-full bg-background overflow-hidden relative'>
+          <div className='h-screen w-full bg-surface-primary overflow-hidden relative'>
                {/* Mobile Toggle Button - Always visible on mobile */}
                {!isSidebarOpen && (
                     <button
@@ -199,7 +199,7 @@ const Page = () => {
                />
 
                {/* Map Container */}
-               <div className='absolute inset-0 lg:left-80'>
+               <div className="absolute inset-0 lg:left-80">
                     <div ref={mapContainerRef} className='w-full h-full' />
 
                     {/* Loading overlay */}

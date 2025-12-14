@@ -8,8 +8,13 @@ import { calculateFloodRisk, getRecommendations } from '@/services/simulation'
 import { PageHeader, InfoBanner, SectionContainer } from '@/components/common'
 import EducationCard from '@/components/ui/EducationCard'
 import ScenarioButton from '@/components/ui/ScenarioButton'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 const Page = () => {
+     // Animation refs for page sections
+     const [bannerRef, bannerVisible] = useScrollAnimation({ delay: 300, initialAnimation: true })
+     const [educationRef, educationVisible] = useScrollAnimation({ delay: 200 })
+
      // Simulation parameters
      const [forestCover, setForestCover] = useState(60)
      const [rainfall, setRainfall] = useState(150)
@@ -45,22 +50,30 @@ const Page = () => {
                />
 
                <SectionContainer className='py-12'>
-                    <InfoBanner
-                         icon={<Beaker className='w-10 h-10 text-surface-primary' />}
-                         title={
-                              <span className='flex items-center gap-2'>
-                                   Simulasi Prediksi Risiko Banjir Interaktif
-                                   <TrendingUp className='w-5 h-5 text-accent' />
-                              </span>
-                         }
-                         description={
-                              <>
-                                   Sesuaikan <strong>tutupan hutan</strong>, <strong>intensitas curah hujan</strong>, dan <strong>kondisi tanah</strong> untuk melihat dampaknya terhadap risiko banjir secara langsung.
-                                   Simulasi ini menggunakan model ilmiah berbasis data riset hidrologi dan ekologi untuk prediksi yang akurat dan dapat dijadikan acuan perencanaan mitigasi bencana.
-                              </>
-                         }
-                         className='mb-8'
-                    />
+                    <div
+                         ref={bannerRef}
+                         className={`transition-all duration-700 ${bannerVisible
+                              ? 'opacity-100 translate-y-0'
+                              : 'opacity-0 translate-y-8'
+                              }`}
+                    >
+                         <InfoBanner
+                              icon={<Beaker className='w-10 h-10 text-surface-primary' />}
+                              title={
+                                   <span className='flex items-center gap-2'>
+                                        Simulasi Prediksi Risiko Banjir Interaktif
+                                        <TrendingUp className='w-5 h-5 text-accent' />
+                                   </span>
+                              }
+                              description={
+                                   <>
+                                        Sesuaikan <strong>tutupan hutan</strong>, <strong>intensitas curah hujan</strong>, dan <strong>kondisi tanah</strong> untuk melihat dampaknya terhadap risiko banjir secara langsung.
+                                        Simulasi ini menggunakan model ilmiah berbasis data riset hidrologi dan ekologi untuk prediksi yang akurat dan dapat dijadikan acuan perencanaan mitigasi bencana.
+                                   </>
+                              }
+                              className='mb-8'
+                         />
+                    </div>
 
                     {/* Two Column Layout - Responsive */}
                     <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8'>
@@ -133,7 +146,13 @@ const Page = () => {
                     </div>
 
                     {/* Educational Content */}
-                    <div className='mt-12 grid grid-cols-1 md:grid-cols-3 gap-6'>
+                    <div
+                         ref={educationRef}
+                         className={`mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-700 ${educationVisible
+                              ? 'opacity-100 translate-y-0'
+                              : 'opacity-0 translate-y-12'
+                              }`}
+                    >
                          <EducationCard
                               icon={<TreePine className='w-10 h-10' />}
                               title="Fungsi Vital Hutan"

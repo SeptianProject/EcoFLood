@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { TreePine, CloudRain, Sprout } from 'lucide-react'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 interface SimulationControlsProps {
      forestCover: number
@@ -20,9 +21,19 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
      onRainfallChange,
      onSoilAbsorptionChange
 }) => {
+     // Animation hooks untuk setiap control
+     const [titleRef, titleVisible] = useScrollAnimation({ initialAnimation: true, delay: 100 })
+     const [forestRef, forestVisible] = useScrollAnimation({ initialAnimation: true, delay: 200 })
+     const [rainfallRef, rainfallVisible] = useScrollAnimation({ initialAnimation: true, delay: 300 })
+     const [soilRef, soilVisible] = useScrollAnimation({ initialAnimation: true, delay: 400 })
+
      return (
           <div className="bg-surface-primary/5 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-lg border-2 border-surface-primary/20">
-               <h2 className="text-xl sm:text-2xl font-bold text-surface-primary mb-4 sm:mb-6 flex items-center gap-2">
+               <h2
+                    ref={titleRef}
+                    className={`text-xl sm:text-2xl font-bold text-surface-primary mb-4 sm:mb-6 flex items-center gap-2 transition-all duration-700 ${titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+                         }`}
+               >
                     <div className="bg-primary/20 p-2 rounded-xl">
                          <TreePine className="w-4 h-4 sm:w-5 sm:h-5 text-surface-primary" />
                     </div>
@@ -30,7 +41,11 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
                </h2>
 
                {/* Forest Cover Control */}
-               <div className="mb-6 sm:mb-8">
+               <div
+                    ref={forestRef}
+                    className={`mb-6 sm:mb-8 transition-all duration-700 ${forestVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+                         }`}
+               >
                     <div className="flex justify-between items-center mb-3">
                          <label className="text-sm sm:text-base text-surface-primary font-semibold flex items-center gap-2">
                               <TreePine className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
@@ -59,7 +74,11 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
                </div>
 
                {/* Rainfall Control */}
-               <div className="mb-6 sm:mb-8">
+               <div
+                    ref={rainfallRef}
+                    className={`mb-6 sm:mb-8 transition-all duration-700 ${rainfallVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+                         }`}
+               >
                     <div className="flex justify-between items-center mb-3">
                          <label className="text-sm sm:text-base text-surface-primary font-semibold flex items-center gap-2">
                               <CloudRain className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
@@ -88,7 +107,11 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
                </div>
 
                {/* Soil Absorption Control */}
-               <div>
+               <div
+                    ref={soilRef}
+                    className={`transition-all duration-700 ${soilVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+                         }`}
+               >
                     <label className="text-sm sm:text-base text-surface-primary font-semibold mb-3 flex items-center gap-2">
                          <Sprout className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
                          <span className="hidden sm:inline">Kapasitas Resapan Tanah</span>
