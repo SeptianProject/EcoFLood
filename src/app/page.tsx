@@ -1,8 +1,13 @@
+'use client'
+
 import Footer from '@/components/layout/Footer'
 import Header from '@/components/layout/Header'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 const page = () => {
+  const router = useRouter()
+
   return (
     <div>
       <Header />
@@ -20,8 +25,16 @@ const page = () => {
             Platform visualisasi data untuk melihat dampak nyata hilangnya hutan terhadap risiko air di wilayah Anda.
           </p>
           <div className='flex items-center gap-3'>
-            <button className='bg-surface-primary text-background px-9 py-3 rounded-full font-semibold cursor-pointer hover:bg-surface-primary/80 transition duration-300 hover:translate-y-0.5'>Buka Peta</button>
-            <button className='bg-primary text-foreground px-9 py-3 rounded-full font-semibold cursor-pointer hover:bg-primary/80 transition duration-300 hover:translate-y-0.5'>Coba Simulasi</button>
+            <button
+              onClick={() => router.push('/peta')}
+              className='bg-surface-primary text-background px-9 py-3 rounded-full font-semibold cursor-pointer hover:bg-surface-primary/80 transition duration-300 hover:translate-y-0.5'>
+              Buka Peta
+            </button>
+            <button
+              onClick={() => router.push('/simulasi')}
+              className='bg-primary text-foreground px-9 py-3 rounded-full font-semibold cursor-pointer hover:bg-primary/80 transition duration-300 hover:translate-y-0.5'>
+              Coba Simulasi
+            </button>
           </div>
         </div>
         {/* right content */}

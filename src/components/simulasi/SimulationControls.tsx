@@ -1,0 +1,175 @@
+"use client"
+
+import React from 'react'
+
+interface SimulationControlsProps {
+     forestCover: number
+     rainfall: number
+     soilAbsorption: 'low' | 'medium' | 'high'
+     onForestCoverChange: (value: number) => void
+     onRainfallChange: (value: number) => void
+     onSoilAbsorptionChange: (value: 'low' | 'medium' | 'high') => void
+}
+
+const SimulationControls: React.FC<SimulationControlsProps> = ({
+     forestCover,
+     rainfall,
+     soilAbsorption,
+     onForestCoverChange,
+     onRainfallChange,
+     onSoilAbsorptionChange
+}) => {
+     return (
+          <div className="bg-surface-primary/5 backdrop-blur-sm rounded-3xl p-8 shadow-lg border-2 border-surface-primary/20">
+               <h2 className="text-2xl font-bold text-surface-primary mb-6">Parameter Simulasi</h2>
+
+               {/* Forest Cover Control */}
+               <div className="mb-8">
+                    <div className="flex justify-between items-center mb-3">
+                         <label className="text-surface-primary font-semibold">
+                              🌳 Tutupan Hutan
+                         </label>
+                         <span className="text-2xl font-bold text-primary">{forestCover}%</span>
+                    </div>
+                    <input
+                         type="range"
+                         min="0"
+                         max="100"
+                         value={forestCover}
+                         onChange={(e) => onForestCoverChange(Number(e.target.value))}
+                         className="w-full h-3 bg-surface-primary/20 rounded-full appearance-none cursor-pointer slider-forest"
+                    />
+                    <div className="flex justify-between text-surface-primary/60 text-sm mt-2">
+                         <span>0%</span>
+                         <span className="text-xs">Tidak Ada Hutan</span>
+                         <span className="text-xs">Hutan Lebat</span>
+                         <span>100%</span>
+                    </div>
+               </div>
+
+               {/* Rainfall Control */}
+               <div className="mb-8">
+                    <div className="flex justify-between items-center mb-3">
+                         <label className="text-surface-primary font-semibold">
+                              💧 Intensitas Hujan
+                         </label>
+                         <span className="text-2xl font-bold text-accent">{rainfall} mm</span>
+                    </div>
+                    <input
+                         type="range"
+                         min="0"
+                         max="300"
+                         value={rainfall}
+                         onChange={(e) => onRainfallChange(Number(e.target.value))}
+                         className="w-full h-3 bg-surface-primary/20 rounded-full appearance-none cursor-pointer slider-rainfall"
+                    />
+                    <div className="flex justify-between text-surface-primary/60 text-sm mt-2">
+                         <span>0 mm</span>
+                         <span className="text-xs">Hujan Ringan</span>
+                         <span className="text-xs">Hujan Ekstrem</span>
+                         <span>300 mm</span>
+                    </div>
+               </div>
+
+               {/* Soil Absorption Control */}
+               <div>
+                    <label className="block text-surface-primary font-semibold mb-3">
+                         🌱 Kemampuan Penyerapan Tanah
+                    </label>
+                    <div className="grid grid-cols-3 gap-3">
+                         <SoilButton
+                              label="Rendah"
+                              value="low"
+                              selected={soilAbsorption === 'low'}
+                              onClick={() => onSoilAbsorptionChange('low')}
+                              color="bg-red-500"
+                         />
+                         <SoilButton
+                              label="Sedang"
+                              value="medium"
+                              selected={soilAbsorption === 'medium'}
+                              onClick={() => onSoilAbsorptionChange('medium')}
+                              color="bg-yellow-500"
+                         />
+                         <SoilButton
+                              label="Tinggi"
+                              value="high"
+                              selected={soilAbsorption === 'high'}
+                              onClick={() => onSoilAbsorptionChange('high')}
+                              color="bg-green-500"
+                         />
+                    </div>
+               </div>
+
+               <style jsx>{`
+                    .slider-forest::-webkit-slider-thumb {
+                         -webkit-appearance: none;
+                         appearance: none;
+                         width: 24px;
+                         height: 24px;
+                         background: var(--color-primary);
+                         cursor: pointer;
+                         border-radius: 50%;
+                         border: 3px solid var(--color-background);
+                         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                    }
+
+                    .slider-forest::-moz-range-thumb {
+                         width: 24px;
+                         height: 24px;
+                         background: var(--color-primary);
+                         cursor: pointer;
+                         border-radius: 50%;
+                         border: 3px solid var(--color-background);
+                         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                    }
+
+                    .slider-rainfall::-webkit-slider-thumb {
+                         -webkit-appearance: none;
+                         appearance: none;
+                         width: 24px;
+                         height: 24px;
+                         background: var(--color-accent);
+                         cursor: pointer;
+                         border-radius: 50%;
+                         border: 3px solid var(--color-background);
+                         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                    }
+
+                    .slider-rainfall::-moz-range-thumb {
+                         width: 24px;
+                         height: 24px;
+                         background: var(--color-accent);
+                         cursor: pointer;
+                         border-radius: 50%;
+                         border: 3px solid var(--color-background);
+                         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                    }
+               `}</style>
+          </div>
+     )
+}
+
+interface SoilButtonProps {
+     label: string
+     value: string
+     selected: boolean
+     onClick: () => void
+     color: string
+}
+
+const SoilButton: React.FC<SoilButtonProps> = ({ label, selected, onClick, color }) => {
+     return (
+          <button
+               onClick={onClick}
+               className={`py-3 px-4 rounded-xl font-semibold transition-all duration-300 ${selected
+                         ? `${color} text-white scale-105 shadow-lg`
+                         : 'bg-surface-primary/10 text-surface-primary hover:bg-surface-primary/20'
+                    }`}
+          >
+               {label}
+          </button>
+     )
+}
+
+export default SimulationControls
