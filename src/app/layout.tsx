@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Mulish } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import Providers from "@/components/Providers";
 import LoadingBar from "@/components/common/LoadingBar";
 import PageLoader from "@/components/common/PageLoader";
@@ -37,6 +38,7 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
